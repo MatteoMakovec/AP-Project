@@ -13,13 +13,14 @@ public class RobustClientHandler extends ClientHandler {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             while (true) {
                 String line = br.readLine();
+                System.out.println("READ: " + line);
                 if (line == null) {
                     System.err.println("Client abruptly closed connection");
                     break;
                 }
-                /*if (line.equals(server.getQuitCommand())) {
+                if (line.toUpperCase().equals(server.getQuitCommand())) {
                     break;
-                }*/
+                }
                 bw.write(server.process(line) + System.lineSeparator());
                 bw.flush();
             }

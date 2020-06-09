@@ -1,11 +1,10 @@
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    private final int port;
-    private final String quitCommand;
+    protected final int port;
+    protected final String quitCommand;
 
     public Server(int port, String quitCommand) {
         this.port = port;

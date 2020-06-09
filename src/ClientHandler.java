@@ -16,7 +16,7 @@ public class ClientHandler extends Thread {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             while (true) {
                 String line = br.readLine();
-                if (line.equals("BYE")) {  // andrebbe scritto:    if(line.equals(server.getQuitCommand()))   , ma non funziona (DA FIXARE)
+                if(line.equals(server.getQuitCommand())) {  // andrebbe scritto:    if(line.equals(server.getQuitCommand()))   , ma non funziona (DA FIXARE)
                     socket.close();
                     break;
                 }

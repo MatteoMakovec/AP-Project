@@ -111,5 +111,4 @@ public class Parser {
                 string.charAt(cursor)
         ));
     }
-
 }

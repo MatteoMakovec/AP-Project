@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class RobustServer extends Server {
-
     public RobustServer(int port, String quitCommand) {
         super(port, quitCommand);
     }

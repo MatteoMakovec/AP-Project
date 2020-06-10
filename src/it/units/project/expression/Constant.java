@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class Constant extends Node {
-
     private final double value;
 
     public Constant(double value) {

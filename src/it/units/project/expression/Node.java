@@ -26,5 +26,4 @@ public abstract class Node {
     public int hashCode() {
         return Objects.hash(children);
     }
-
 }

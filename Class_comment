@@ -1,9 +1,24 @@
 Main:
-  Its only purpose is to start the server, setting the port and the quit command
+    Its only purpose is to start the server, setting the port and the quit command
   
 Server:
-  It just creates a ServerSocket to accept connections from clients and starts the ClientHandler
+    It just creates a ServerSocket to accept connections from clients and starts the ClientHandler
 
 RobustServer:
-  Inherits the Server. It starts the RobustClientHandler, insted of the ClientHandler.
+    Inherits the Server. It starts the RobustClientHandler, instead of the ClientHandler.
+    It's more robust than the simple Server because it handles errors.
+    (IS IT ENOUGH? (IN TERMS OF HANDLING ERRORS))
+    (IS IT REALLY NECESSARY TO HAVE THE SERVER AND THE ROBUSTSERVER? OR IS BETTER TO HAVE JUST THE ROBUSTSERVER?)
+
+ClientHandler:
+    This class extends Thread. It creates a bufferedReader and a BufferedWriter for each thread (it's necessary because every thread could be different socket) and communicates with the
+    Client.
+    (IT HAS TO BE IMPLEMENTED THE RIGHT COMMUNICATION BETWEEN SERVER AND CLIENT)
+    (HAVE I TO EXECUTE THE FLUSH EVERY TIME IN THE BUFFEREDWRITER?)
+
+RpbustClientHandler:
+    Inherits the ClientHandler. It communicates with the Client.
+    It's more robust than the simple ClientHandler because it handles errors.
+    (IS IT ENOUGH? (IN TERMS OF HANDLING ERRORS))
+    (IS IT REALLY NECESSARY TO HAVE THE CLIENTHANDLER AND THE ROBUSTCLIENTHANDLER? OR IS BETTER TO HAVE JUST THE ROBUSTCLIENTHANDLER?)
 

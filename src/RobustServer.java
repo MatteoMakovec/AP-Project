@@ -8,7 +8,7 @@ public class RobustServer extends Server {
         super(port, quitCommand);
     }
 
-    public void start () throws IOException {
+    public void start () {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket socket;

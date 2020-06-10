@@ -1,23 +1,25 @@
+package it.units.project.server;
+
 import java.io.*;
 import java.net.Socket;
 
-public class RobustClientHandler extends ClientHandler {
+public class ClientHandler extends Thread {
+    protected final Socket socket;
+    protected final Server server;
 
-    public RobustClientHandler(Socket socket, Server server){
-        super(socket, server);
+    public ClientHandler(Socket socket, Server server) {
+        this.socket = socket;
+        this.server = server;
     }
 
     public void run() {
-        try (socket) {
+        try {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             while (true) {
                 String line = br.readLine();
-                if (line == null) {
-                    System.err.println("Client abruptly closed connection");
-                    break;
-                }
-                if (line.toUpperCase().equals(server.getQuitCommand())) {
+                if(line.equals(server.getQuitCommand())) {
+                    socket.close();
                     break;
                 }
                 bw.write(server.process(line) + System.lineSeparator());

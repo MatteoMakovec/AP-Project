@@ -1,3 +1,9 @@
 Main:
-  It's only to start the server, setting the port and the quit command
+  Its only purpose is to start the server, setting the port and the quit command
   
+Server:
+  It just creates a ServerSocket to accept connections from clients and starts the ClientHandler
+
+RobustServer:
+  Inherits the Server. It starts the RobustClientHandler, insted of the ClientHandler.
+

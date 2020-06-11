@@ -4,8 +4,8 @@ import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler extends Thread {
-    protected final Socket socket;
-    protected final Server server;
+    private final Socket socket;
+    private final Server server;
 
     public ClientHandler(Socket socket, Server server) {
         this.socket = socket;
@@ -13,13 +13,18 @@ public class ClientHandler extends Thread {
     }
 
     public void run() {
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        try (socket ;
+             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        ) {
             while (true) {
                 String line = br.readLine();
-                if(line.equals(server.getQuitCommand())) {
-                    socket.close();
+                System.out.println("[log] '" + line + "'");
+                if (line == null) {
+                    System.err.println("Client abruptly closed connection");
+                    break;
+                }
+                if (line.toUpperCase().equals(server.getQuitCommand())) {  // Un alternativa poteva essere contornare questo if con un try-catch e nel catch catturare un NullPointerException (che rappresenta il caso line == null dello statement if sovrastante)
                     break;
                 }
                 bw.write(server.process(line) + System.lineSeparator());

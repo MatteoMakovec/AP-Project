@@ -5,20 +5,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    protected final int port;
-    protected final String quitCommand;
+    private final int port;
+    private final String quitCommand;
 
     public Server(int port, String quitCommand) {
         this.port = port;
         this.quitCommand = quitCommand;
     }
 
-    public void start() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(port);
-        while (true) {
-            Socket socket = serverSocket.accept();
-            ClientHandler clientHandler = new ClientHandler(socket, this);
-            clientHandler.start();
+    public void start () throws IOException {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            while (true) {
+                Socket socket;
+                try {
+                    socket = serverSocket.accept();
+                    ClientHandler clientHandler = new ClientHandler(socket, this);
+                    clientHandler.start();
+                } catch (IOException e) {
+                    System.err.printf("Cannot accept connection due to %s", e);
+                }
+            }
         }
     }
 

@@ -1,11 +1,10 @@
-import it.units.project.server.RobustServer;
-import it.units.project.server.Server;
+package it.units.project.server;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Server server = new RobustServer(10000, "BYE");
+        Server server = new Server(10000, "BYE");
         server.start();
     }
 }

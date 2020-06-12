@@ -16,7 +16,7 @@ public class ClientHandler extends Thread {
         try (socket ;
              BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        ) {
+            ) {
             while (true) {
                 String line = br.readLine();
                 System.out.println("[log] '" + line + "'");
@@ -24,9 +24,12 @@ public class ClientHandler extends Thread {
                     System.err.println("Client abruptly closed connection");
                     break;
                 }
-                if (line.toUpperCase().equals(server.getQuitCommand())) {  // Un alternativa poteva essere contornare questo if con un try-catch e nel catch catturare un NullPointerException (che rappresenta il caso line == null dello statement if sovrastante)
+                if (line.toUpperCase().equals(server.getQuitCommand())) {
+                    socket.close();
                     break;
                 }
+
+                // here we have to implement the right code to parse the input from the client
                 bw.write(server.process(line) + System.lineSeparator());
                 bw.flush();
             }

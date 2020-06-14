@@ -1,12 +1,16 @@
 package it.units.project.request;
 
-public class Request {
+public abstract class Request {
     private final String request;
     protected long processTime;
 
-    public Request(String regex){
+    public Request(String regex, long time){
         request = regex;
-        processTime = System.nanoTime();
+        processTime = time;
+    }
+
+    protected void closeRequest(){
+        processTime = System.nanoTime() - processTime;
     }
 
     @Override

@@ -1,4 +1,9 @@
 package it.units.project.request;
 
-public class StatRequest {
+import java.util.function.Function;
+
+public class StatRequest extends Request{
+    public StatRequest(String regex, long time){
+        super(regex, time);
+    }
 }

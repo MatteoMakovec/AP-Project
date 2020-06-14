@@ -1,5 +1,7 @@
 package it.units.project.server;
 
+import it.units.project.request.InputScanner;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -24,12 +26,10 @@ public class ClientHandler extends Thread {
                     System.err.println("Client abruptly closed connection");
                     break;
                 }
-                if (line.toUpperCase().equals(server.getQuitCommand())) {
-                    socket.close();
-                    break;
-                }
+                InputScanner inputScanner = new InputScanner(line, server.getQuitCommand());
 
                 // here we have to implement the right code to parse the input from the client
+
                 bw.write(server.process(line) + System.lineSeparator());
                 bw.flush();
             }

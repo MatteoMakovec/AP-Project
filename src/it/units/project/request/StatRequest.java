@@ -43,7 +43,6 @@ public class StatRequest extends Request{
                 break;
 
             default:
-                System.err.println("Command not found");
                 result = new ErrorResponse(r, "(Command exception) Command not found").buildingResponse();
                 break;
         }

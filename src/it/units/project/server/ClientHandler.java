@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static it.units.project.response.ResponseBuilder.buildingResponse;
+
 public class ClientHandler extends Thread {
     private final Socket socket;
     private final Server server;
@@ -36,12 +38,9 @@ public class ClientHandler extends Thread {
                 }
 
                 Request req = inputProcessing(line);
-                String result = req.process(requests);
-                req.closeRequest(true);
-                requests.add(req);
-
-                bw.write(result + System.lineSeparator());
+                bw.write(buildingResponse(req, req.process(requests)) + System.lineSeparator());
                 bw.flush();
+                requests.add(req);
             }
         } catch (IOException e) {
             System.err.printf("IO error: %s\n", e);
@@ -52,10 +51,10 @@ public class ClientHandler extends Thread {
         int index = request.indexOf(";");
 
         if (index == -1){
-            return new StatRequest(request, System.nanoTime());
+            return new StatRequest(request, System.nanoTime());     // Teniamo in nanosecondi o mettiamo in millisecondi?
         }
         else{
-            return new ComputationRequest(request, System.nanoTime());
+            return new ComputationRequest(request, System.nanoTime());      // Teniamo in nanosecondi o mettiamo in millisecondi?
         }
     }
 }

@@ -22,22 +22,22 @@ public class StatRequest extends Request{
                 break;
 
             case "STAT_AVG_TIME":
-                long total_time = 0;
+                double total_time = 0;
                 for(Request request : requests){
                     total_time += request.processTime;
                 }
-                long average_time = total_time / requests.size();
-                result = Long.toString(average_time);
+                double average_time = total_time / requests.size();
+                result = Double.toString(average_time);
                 break;
 
             case "STAT_MAX_TIME":
-                long max_time = 0;
+                double max_time = 0;
                 for(Request request : requests){
                     if(request.processTime > max_time){
                         max_time = request.processTime;
                     }
                 }
-                result = Long.toString(max_time);
+                result = Double.toString(max_time);
                 break;
 
             default:

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public abstract class Request {
     protected final String input;
-    protected long processTime;
+    protected double processTime;
     protected boolean state;
 
     public abstract String process(Collection<Request> req);
@@ -14,9 +14,10 @@ public abstract class Request {
         processTime = time;
     }
 
-    public void closeRequest(boolean state){                // Da rimettere protected
-        processTime = System.nanoTime() - processTime;
+    public double closeRequest(boolean state){
+        processTime = System.nanoTime() - processTime;      // Teniamo in nanosecondi o mettiamo in millisecondi?
         this.state = state;
+        return processTime;
     }
 
     @Override

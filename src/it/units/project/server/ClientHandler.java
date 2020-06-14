@@ -8,8 +8,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class ClientHandler extends Thread {
     private final Socket socket;
@@ -27,7 +25,6 @@ public class ClientHandler extends Thread {
             ) {
             while (true) {
                 String line = br.readLine();
-                System.out.println("[log] '" + line + "'");
                 if (line == null) {
                     System.err.println("Client abruptly closed connection");
                     break;
@@ -38,9 +35,11 @@ public class ClientHandler extends Thread {
                 }
 
                 Collection<Request> requests = new ArrayList<>();
-                requests.add(inputProcessing(line));
+                Request req = inputProcessing(line);
+                String result = req.process(requests);
+                requests.add(req);
 
-                bw.write(server.process(line) + System.lineSeparator());
+                bw.write(result + System.lineSeparator());
                 bw.flush();
             }
         } catch (IOException e) {
@@ -50,6 +49,7 @@ public class ClientHandler extends Thread {
 
     public Request inputProcessing(String request){
         int index = request.indexOf(";");
+
         if (index == -1){
             return new StatRequest(request, System.nanoTime());
         }

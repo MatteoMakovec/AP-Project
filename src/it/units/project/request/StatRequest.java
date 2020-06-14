@@ -1,5 +1,7 @@
 package it.units.project.request;
 
+import it.units.project.response.ErrorResponse;
+import it.units.project.response.SuccessfullResponse;
 import java.util.Collection;
 
 public class StatRequest extends Request{
@@ -7,7 +9,7 @@ public class StatRequest extends Request{
         super(regex, time);
     }
 
-    public String process(Collection<Request> requests){
+    public String process(Collection<Request> requests, Request r){
         String result = "";
 
         switch (input){
@@ -18,7 +20,7 @@ public class StatRequest extends Request{
                         numberOfSuccess++;
                     }
                 }
-                result = Integer.toString(numberOfSuccess);
+                result = new SuccessfullResponse(r, Integer.toString(numberOfSuccess)).buildingResponse();
                 break;
 
             case "STAT_AVG_TIME":
@@ -27,7 +29,7 @@ public class StatRequest extends Request{
                     total_time += request.processTime;
                 }
                 double average_time = total_time / requests.size();
-                result = Double.toString(average_time);
+                result = new SuccessfullResponse(r, Double.toString(average_time)).buildingResponse();
                 break;
 
             case "STAT_MAX_TIME":
@@ -37,12 +39,12 @@ public class StatRequest extends Request{
                         max_time = request.processTime;
                     }
                 }
-                result = Double.toString(max_time);
+                result = new SuccessfullResponse(r, Double.toString(max_time)).buildingResponse();
                 break;
 
             default:
                 System.err.println("Command not found");
-                result = "Command not found";
+                result = new ErrorResponse(r, "(Command exception) Command not found").buildingResponse();
                 break;
         }
         return result;

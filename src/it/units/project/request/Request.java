@@ -7,7 +7,7 @@ public abstract class Request {
     protected double processTime;
     protected boolean state;
 
-    public abstract String process(Collection<Request> req);
+    public abstract String process(Collection<Request> req, Request r);
 
     public Request(String regex, long time){
         input = regex;

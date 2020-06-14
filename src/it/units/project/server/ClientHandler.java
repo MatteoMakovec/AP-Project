@@ -3,13 +3,11 @@ package it.units.project.server;
 import it.units.project.request.ComputationRequest;
 import it.units.project.request.Request;
 import it.units.project.request.StatRequest;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static it.units.project.response.ResponseBuilder.buildingResponse;
 
 public class ClientHandler extends Thread {
     private final Socket socket;
@@ -36,9 +34,8 @@ public class ClientHandler extends Thread {
                     socket.close();
                     break;
                 }
-
                 Request req = inputProcessing(line);
-                bw.write(buildingResponse(req, req.process(requests)) + System.lineSeparator());
+                bw.write(req.process(requests, req) + System.lineSeparator());
                 bw.flush();
                 requests.add(req);
             }

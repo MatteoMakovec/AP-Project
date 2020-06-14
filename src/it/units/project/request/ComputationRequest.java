@@ -7,7 +7,7 @@ public class ComputationRequest extends Request{
         super(regex, time);
     }
 
-    public String process(Collection<Request> requests){
+    public String process(Collection<Request> requests, Request r){
         closeRequest(true);
         return "OK";
     }

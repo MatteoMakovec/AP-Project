@@ -4,4 +4,9 @@ public class ComputationRequest extends Request{
     public ComputationRequest(String regex, long time){
         super(regex, time);
     }
+
+    public String process(){
+        closeRequest();
+        return "OK";
+    }
 }

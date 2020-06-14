@@ -1,9 +1,15 @@
 package it.units.project.server;
 
-import it.units.project.request.InputScanner;
+import it.units.project.request.ComputationRequest;
+import it.units.project.request.Request;
+import it.units.project.request.StatRequest;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class ClientHandler extends Thread {
     private final Socket socket;
@@ -26,15 +32,29 @@ public class ClientHandler extends Thread {
                     System.err.println("Client abruptly closed connection");
                     break;
                 }
-                InputScanner inputScanner = new InputScanner(line, server.getQuitCommand());
+                if (line.toUpperCase().equals(server.getQuitCommand())) {
+                    socket.close();
+                    break;
+                }
 
-                // here we have to implement the right code to parse the input from the client
+                Collection<Request> requests = new ArrayList<>();
+                requests.add(inputProcessing(line));
 
                 bw.write(server.process(line) + System.lineSeparator());
                 bw.flush();
             }
         } catch (IOException e) {
             System.err.printf("IO error: %s\n", e);
+        }
+    }
+
+    public Request inputProcessing(String request){
+        int index = request.indexOf(";");
+        if (index == -1){
+            return new StatRequest(request, System.nanoTime());
+        }
+        else{
+            return new ComputationRequest(request, System.nanoTime());
         }
     }
 }

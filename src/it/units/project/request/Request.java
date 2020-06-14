@@ -1,8 +1,10 @@
 package it.units.project.request;
 
 public abstract class Request {
-    private final String request;
+    protected final String request;
     protected long processTime;
+
+    public abstract String process();
 
     public Request(String regex, long time){
         request = regex;
@@ -16,5 +18,9 @@ public abstract class Request {
     @Override
     public String toString() {
         return request;
+    }
+
+    public long getProcessTime(){
+        return processTime;
     }
 }

@@ -23,6 +23,7 @@ public class ClientHandler extends Thread {
              BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             ) {
+            Collection<Request> requests = new ArrayList<>();
             while (true) {
                 String line = br.readLine();
                 if (line == null) {
@@ -34,9 +35,9 @@ public class ClientHandler extends Thread {
                     break;
                 }
 
-                Collection<Request> requests = new ArrayList<>();
                 Request req = inputProcessing(line);
                 String result = req.process(requests);
+                req.closeRequest(true);
                 requests.add(req);
 
                 bw.write(result + System.lineSeparator());

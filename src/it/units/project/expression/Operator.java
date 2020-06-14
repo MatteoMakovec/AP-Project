@@ -6,7 +6,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Operator extends Node {
-
     public enum Type {
         SUM('+', a -> a[0] + a[1]),
         SUBTRACTION('-', a -> a[0] - a[1]),

@@ -12,6 +12,7 @@ public class Operator extends Node {
         MULTIPLICATION('*', a -> a[0] * a[1]),
         DIVISION('/', a -> a[0] / a[1]),
         POWER('^', a -> Math.pow(a[0], a[1]));
+
         private final char symbol;
         private final Function<double[], Double> function;
 

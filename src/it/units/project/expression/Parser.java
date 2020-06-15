@@ -5,8 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-
-    //BNF
+    //  BNF
     //  <e> ::= <n> | <v> | (<e> <o> <e>)
 
     private final String string;
@@ -68,7 +67,7 @@ public class Parser {
             cursor = token.end;
             Node child1 = parse();
             Token operatorToken = TokenType.OPERATOR.next(string, cursor);
-            if (operatorToken !=null && operatorToken.start==cursor) {
+            if (operatorToken != null && operatorToken.start == cursor) {
                 cursor = operatorToken.end;
             } else {
                 throw new IllegalArgumentException(String.format(
@@ -79,7 +78,7 @@ public class Parser {
             }
             Node child2 = parse();
             Token closedBracketToken = TokenType.CLOSED_BRACKET.next(string, cursor);
-            if (closedBracketToken !=null && closedBracketToken.start==cursor) {
+            if (closedBracketToken != null && closedBracketToken.start == cursor) {
                 cursor = closedBracketToken.end;
             } else {
                 throw new IllegalArgumentException(String.format(

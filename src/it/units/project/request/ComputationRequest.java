@@ -1,5 +1,9 @@
 package it.units.project.request;
 
+import it.units.project.expression.Node;
+import it.units.project.expression.Operator;
+import it.units.project.expression.Parser;
+
 import java.util.Collection;
 
 public class ComputationRequest extends Request{
@@ -33,7 +37,17 @@ public class ComputationRequest extends Request{
         expression = workingString.substring(indexSeparator+1);
 
         closeRequest(true);
-        String result = "Computation kind: " + computationKind + "\nValues kind: " + valuesKind + "\nVariable values kind: " + variableValues + "\nExpression: " + expression;
+        //String result = "Computation kind: " + computationKind + "\nValues kind: " + valuesKind + "\nVariable values kind: " + variableValues + "\nExpression: " + expression;
+        Node n = new Parser(expression).parse();
+        String result = "";
+        int i = 0;
+        for (Node child : n.getChildren()){
+            i++;
+            result += i + ") " + child + "\n";
+        }
+
+        VariableValuesFunction v = new VariableValuesFunction(variableValues);
+        v.functionVariableGeneration();
         return result;
     }
 }

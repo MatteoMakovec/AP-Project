@@ -9,9 +9,7 @@ public class ComputationRequest extends Request{
     }
 
     public String process(Collection<Request> requests, Request r){     // TODO: Non servirebbe passare la Collection, ma devo per via della classe astratta
-        String result = inputProcessing(r.input);
-
-        return result;
+        return inputProcessing(r.input);
     }
 
     private String inputProcessing(String input){
@@ -31,6 +29,12 @@ public class ComputationRequest extends Request{
         }
 
         // TODO: Computazione del valore voluto
+        VariablesDomain vd = new VariablesDomain(formatRequest[2]);
+        double[] values = vd.domainGenerator().get("x1");
+
+        for (int k=0; k<values.length; k++ ){
+            result += values[k] + ", ";
+        }
 
         return result;
     }

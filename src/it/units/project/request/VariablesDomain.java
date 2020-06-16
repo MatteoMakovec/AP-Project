@@ -13,10 +13,11 @@ public class VariablesDomain {
 
     public Map<String, double[]> domainGenerator(){
         Map<String, double[]> domain = new HashMap<>();
+
         for (int i = 0; i < variablesValues.length ; i+=4){
             int domainSize = (int) (Double.parseDouble(variablesValues[i+3]) - Double.parseDouble(variablesValues[i+1]) / Double.parseDouble(variablesValues[i+2]));
-            double[] values = new double[domainSize];
-            for (int j = 0; j < domainSize; j++){
+            double[] values = new double[domainSize+1];
+            for (int j = 0; j <= domainSize; j++){
                 values[j] = Double.parseDouble(variablesValues[i+1]) + j * Double.parseDouble(variablesValues[i+2]);
             }
             domain.put(variablesValues[i], values);
@@ -27,14 +28,12 @@ public class VariablesDomain {
     private String[] variableValuesProcessing(String input){
         StringTokenizer variables = new StringTokenizer(input, ",");
         int totalTokens = variables.countTokens();
-        String[] variablesDefinition = {};
+        String[] variablesDefinition = new String[totalTokens*4];
 
         if(totalTokens > 0){
-            variablesDefinition = new String[totalTokens*4];
             int i = 0;
             while (variables.hasMoreTokens()) {
-                String definition = variables.nextToken();
-                StringTokenizer items = new StringTokenizer(definition, ":");
+                StringTokenizer items = new StringTokenizer(variables.nextToken(), ":");
                 if(items.countTokens() != 4){
                     System.err.println("ERROR");
                     // TODO: errore, devono esserci 4 tokens
@@ -44,7 +43,7 @@ public class VariablesDomain {
                     variablesDefinition[i+j] = items.nextToken();
                     j++;
                 }
-                i++;
+                i+=4;
             }
         }
 

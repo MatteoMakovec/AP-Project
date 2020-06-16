@@ -17,6 +17,7 @@ public abstract class Request {
     public double closeRequest(boolean state){
         processTime = System.nanoTime() - processTime;      // TODO: Teniamo in nanosecondi o mettiamo in millisecondi?
         this.state = state;
+
         return processTime;
     }
 

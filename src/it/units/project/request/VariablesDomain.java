@@ -25,6 +25,7 @@ public class VariablesDomain {
 
         return domain;
     }
+
     private String[] variableValuesProcessing(String input){
         StringTokenizer variables = new StringTokenizer(input, ",");
         int totalTokens = variables.countTokens();

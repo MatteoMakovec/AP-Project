@@ -9,8 +9,8 @@ public class ErrorResponse extends ResponseBuilder{
 
     public String buildingResponse(){
         String returnFormat = "ERR";
-        request.closeRequest(false);
 
+        request.closeRequest(false);
         return returnFormat+separator+toBuild;
     }
 }

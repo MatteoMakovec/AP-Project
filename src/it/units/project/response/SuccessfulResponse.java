@@ -2,8 +2,8 @@ package it.units.project.response;
 
 import it.units.project.request.Request;
 
-public class SuccessfullResponse extends ResponseBuilder{
-    public SuccessfullResponse(Request request, String string){
+public class SuccessfulResponse extends ResponseBuilder{
+    public SuccessfulResponse(Request request, String string){
         super(request, string);
     }
 

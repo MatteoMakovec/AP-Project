@@ -26,10 +26,10 @@ public class VariableValuesFunction {
             double upper = Double.parseDouble(s.substring(0, indexSeparator));
 
             if(step <= 0){
-                // errore: step non può essere negativo --> la request fallisce
+                // TODO: errore: step non può essere negativo --> la request fallisce
             }
             if(upper < upper){
-                // errore: upper non può essere inferiore al lower --> la request fallisce
+                // TODO: errore: upper non può essere inferiore al lower --> la request fallisce
             }
 
             System.out.println("variableName: " + variableName + "lower: " + lower + "step: " + step + "upper: " + upper);

@@ -11,14 +11,14 @@ public class ComputationRequest extends Request{
         super(regex, time);
     }
 
-    public String process(Collection<Request> requests, Request r){     // Non servirebbe passare la Collection, ma devo per via della classe astratta
+    public String process(Collection<Request> requests, Request r){     // TODO: Non servirebbe passare la Collection, ma devo per via della classe astratta
         String result = inputProcessing(r.input);
 
         return result;
     }
 
     private String inputProcessing(String input){
-        char computationSeparator = '_';
+        char computationSeparator = '_';                // TODO: Forse usare un Tokenizer rende il codice più elegante
         char separator = ';';
         String workingString = input;
 

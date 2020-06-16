@@ -48,10 +48,10 @@ public class ClientHandler extends Thread {
         int index = request.indexOf(";");
 
         if (index == -1){
-            return new StatRequest(request, System.nanoTime());     // Teniamo in nanosecondi o mettiamo in millisecondi?
+            return new StatRequest(request, System.nanoTime());     // TODO: Teniamo in nanosecondi o mettiamo in millisecondi?
         }
         else{
-            return new ComputationRequest(request, System.nanoTime());      // Teniamo in nanosecondi o mettiamo in millisecondi?
+            return new ComputationRequest(request, System.nanoTime());      // TODO: Teniamo in nanosecondi o mettiamo in millisecondi?
         }
     }
 }

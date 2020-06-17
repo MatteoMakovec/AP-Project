@@ -1,26 +1,25 @@
 package it.units.project.request;
 
 import java.util.*;
-import java.util.concurrent.atomic.LongAccumulator;
 
 public class ExpressionsDomain {
     private Map<String, double[]> variablesDomain;
     private String valuesKind;
     private List<String> expressions;
 
-    public ExpressionsDomain(String valuesKind, Map<String, double[]> variablesDomain, List<String> expressions){
+    public ExpressionsDomain(String valuesKind, Map<String, double[]> variablesDomain, List<String> expressions) {
         this.valuesKind = valuesKind;
         this.variablesDomain = variablesDomain;
         this.expressions = expressions;
     }
 
-    private List<List<Double>> makeGrid(){
+    private List<List<Double>> makeGrid() {
         List<List<Double>> tuples = new ArrayList<>();
         Set<String> variablesNames = variablesDomain.keySet();
-        for (String name : variablesNames){
+        for (String name : variablesNames) {
             double[] d = variablesDomain.get(name);
             List<Double> nupla = new ArrayList<>();
-            for (double dd : d){
+            for (double dd : d) {
                 nupla.add(dd);
             }
             tuples.add(nupla);
@@ -28,30 +27,27 @@ public class ExpressionsDomain {
         return cartesianProduct(tuples);
     }
 
-    private List<List<Double>> makeList(){
+    private List<List<Double>> makeList() {
         List<List<Double>> tuples = new ArrayList<>();
         Set<String> variablesNames = variablesDomain.keySet();
-        int lastLength = -1;
-        for (String name : variablesNames){
-            double[] d = variablesDomain.get(name);
-            if((lastLength != -1) && (lastLength != d.length)){
-                System.err.println("ERRORE: i domini delle due variabili non hanno la stessa grandezza");
-                // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
-            }
-            lastLength = d.length;
-            // TODO: Creare la lista
+        if (haveSameSize() == false) {
+            System.err.println("ERRORE: i domini delle due variabili non hanno la stessa grandezza");
+            // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
+        }
+        for(int j=0; j<3; j++){
             List<Double> nupla = new ArrayList<>();
-            for (double dd : d){
-                nupla.add(dd);
+            for (String name : variablesNames) {
+                double[] d = variablesDomain.get(name);
+                nupla.add(d[j]);
             }
             tuples.add(nupla);
         }
-        return cartesianProduct(tuples);
+        return tuples;
     }
 
-    public List<List<Double>> expressionDomainProcessing(){
+    public List<List<Double>> expressionDomainProcessing() {
         List<List<Double>> expressionsDomain;
-        switch (valuesKind.toUpperCase()){
+        switch (valuesKind.toUpperCase()) {
             case "GRID":
                 expressionsDomain = makeGrid();
                 break;
@@ -87,5 +83,18 @@ public class ExpressionsDomain {
             }
         }
         return resultLists;
+    }
+
+    private boolean haveSameSize() {
+        Set<String> variablesNames = variablesDomain.keySet();
+        int lastLength = -1;
+        for (String name : variablesNames) {
+            double[] d = variablesDomain.get(name);
+            if ((lastLength != d.length) && (lastLength != -1)){
+                return false;
+            }
+            lastLength = d.length;
+        }
+        return true;
     }
 }

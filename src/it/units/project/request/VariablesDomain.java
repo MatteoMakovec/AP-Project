@@ -15,7 +15,7 @@ public class VariablesDomain {
         Map<String, double[]> domain = new HashMap<>();
 
         for (int i = 0; i < variablesValues.length ; i+=4){
-            int domainSize = (int) (Double.parseDouble(variablesValues[i+3]) - Double.parseDouble(variablesValues[i+1]) / Double.parseDouble(variablesValues[i+2]));
+            int domainSize = (int) ((Double.parseDouble(variablesValues[i+3]) - Double.parseDouble(variablesValues[i+1])) / Double.parseDouble(variablesValues[i+2]));
             double[] values = new double[domainSize+1];
             for (int j = 0; j <= domainSize; j++){
                 values[j] = Double.parseDouble(variablesValues[i+1]) + j * Double.parseDouble(variablesValues[i+2]);

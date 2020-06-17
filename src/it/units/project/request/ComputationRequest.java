@@ -1,7 +1,6 @@
 package it.units.project.request;
 
-import java.util.Collection;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class ComputationRequest extends Request{
     public ComputationRequest(String regex, long time){
@@ -29,13 +28,12 @@ public class ComputationRequest extends Request{
         }
 
         // TODO: Computazione del valore voluto
-        VariablesDomain vd = new VariablesDomain(formatRequest[2]);
-        double[] values = vd.domainGenerator().get("x1");
-
-        for (int k=0; k<values.length; k++ ){
-            result += values[k] + ", ";
+        List<String> expressions = new ArrayList<>();
+        for (int l=3; l<formatRequest.length; l++){
+            expressions.add(formatRequest[l]);
         }
+        ExpressionsDomain expressionsDomain = new ExpressionsDomain(formatRequest[1], new VariablesDomain(formatRequest[2]).domainGenerator(), expressions);
 
-        return result;
+        return expressionsDomain.expressionDomainProcessing().toString();
     }
 }

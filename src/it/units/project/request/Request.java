@@ -6,12 +6,19 @@ public abstract class Request {
     protected final String input;
     protected double processTime;
     protected boolean state;
+    protected Collection<Request> requests;
 
-    public abstract String process(Collection<Request> req, Request r);
+    public abstract String process(Request r);
 
     public Request(String regex, long time){
         input = regex;
         processTime = time;
+    }
+
+    public Request(String regex, long time, Collection<Request> req){
+        input = regex;
+        processTime = time;
+        requests = req;
     }
 
     public double closeRequest(boolean state){

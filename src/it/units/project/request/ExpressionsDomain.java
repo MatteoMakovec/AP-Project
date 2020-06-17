@@ -30,12 +30,13 @@ public class ExpressionsDomain {
     private List<List<Double>> makeList() {
         List<List<Double>> tuples = new ArrayList<>();
         Set<String> variablesNames = variablesDomain.keySet();
-        if (haveSameSize() == false) {
+        int domainSize = haveSameSize();
+        if (domainSize == -1) {
             System.err.println("ERRORE: i domini delle due variabili non hanno la stessa grandezza");
             return Collections.emptyList();
             // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
         }
-        for(int j=0; j<3; j++){
+        for(int j=0; j<domainSize; j++){
             List<Double> nupla = new ArrayList<>();
             for (String name : variablesNames) {
                 double[] d = variablesDomain.get(name);
@@ -86,16 +87,16 @@ public class ExpressionsDomain {
         return resultLists;
     }
 
-    private boolean haveSameSize() {
+    private int haveSameSize() {
         Set<String> variablesNames = variablesDomain.keySet();
         int lastLength = -1;
         for (String name : variablesNames) {
             double[] d = variablesDomain.get(name);
             if ((lastLength != d.length) && (lastLength != -1)){
-                return false;
+                return -1;
             }
             lastLength = d.length;
         }
-        return true;
+        return lastLength;
     }
 }

@@ -34,8 +34,8 @@ public class ClientHandler extends Thread {
                     socket.close();
                     break;
                 }
-                Request req = inputProcessing(line);
-                bw.write(req.process(requests, req) + System.lineSeparator());
+                Request req = inputProcessing(line, requests);
+                bw.write(req.process(req) + System.lineSeparator());
                 bw.flush();
                 requests.add(req);
             }
@@ -44,11 +44,11 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public Request inputProcessing(String request){
+    public Request inputProcessing(String request, Collection<Request> requests){
         int index = request.indexOf(";");
 
         if (index == -1){
-            return new StatRequest(request, System.nanoTime());     // TODO: Teniamo in nanosecondi o mettiamo in millisecondi?
+            return new StatRequest(request, System.nanoTime(), requests);     // TODO: Teniamo in nanosecondi o mettiamo in millisecondi?
         }
         else{
             return new ComputationRequest(request, System.nanoTime());      // TODO: Teniamo in nanosecondi o mettiamo in millisecondi?

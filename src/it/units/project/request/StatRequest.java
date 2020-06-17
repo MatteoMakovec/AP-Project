@@ -5,11 +5,11 @@ import it.units.project.response.SuccessfulResponse;
 import java.util.Collection;
 
 public class StatRequest extends Request{
-    public StatRequest(String regex, long time){
-        super(regex, time);
+    public StatRequest(String regex, long time, Collection<Request> requests){
+        super(regex, time, requests);
     }
 
-    public String process(Collection<Request> requests, Request r){
+    public String process(Request r){
         String result = "";
 
         switch (input){

@@ -7,7 +7,7 @@ public class ComputationRequest extends Request{
         super(regex, time);
     }
 
-    public String process(Collection<Request> requests, Request r){     // TODO: Non servirebbe passare la Collection, ma devo per via della classe astratta
+    public String process(Request r){
         return inputProcessing(r.input);
     }
 

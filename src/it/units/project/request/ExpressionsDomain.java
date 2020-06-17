@@ -1,6 +1,7 @@
 package it.units.project.request;
 
 import java.util.*;
+import java.util.concurrent.atomic.LongAccumulator;
 
 public class ExpressionsDomain {
     private Map<String, double[]> variablesDomain;
@@ -29,11 +30,23 @@ public class ExpressionsDomain {
 
     private List<List<Double>> makeList(){
         List<List<Double>> tuples = new ArrayList<>();
-        /** TODO: se i domini delle variabili non hanno la stessa lunghezza, allora ERRORE.
-         *        Altrimenti calcolare la lista
-         */
-
-        return tuples;
+        Set<String> variablesNames = variablesDomain.keySet();
+        int lastLength = -1;
+        for (String name : variablesNames){
+            double[] d = variablesDomain.get(name);
+            if((lastLength != -1) && (lastLength != d.length)){
+                System.err.println("ERRORE: i domini delle due variabili non hanno la stessa grandezza");
+                // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
+            }
+            lastLength = d.length;
+            // TODO: Creare la lista
+            List<Double> nupla = new ArrayList<>();
+            for (double dd : d){
+                nupla.add(dd);
+            }
+            tuples.add(nupla);
+        }
+        return cartesianProduct(tuples);
     }
 
     public List<List<Double>> expressionDomainProcessing(){

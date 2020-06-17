@@ -32,6 +32,7 @@ public class ExpressionsDomain {
         Set<String> variablesNames = variablesDomain.keySet();
         if (haveSameSize() == false) {
             System.err.println("ERRORE: i domini delle due variabili non hanno la stessa grandezza");
+            return Collections.emptyList();
             // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
         }
         for(int j=0; j<3; j++){
@@ -59,9 +60,9 @@ public class ExpressionsDomain {
             default:
                 System.err.println("Protocollo non rispettato");
                 expressionsDomain = Collections.emptyList();
+                return Collections.emptyList();
                 // TODO: ERRORE, protocollo non rispettato
         }
-
         return expressionsDomain;
     }
 

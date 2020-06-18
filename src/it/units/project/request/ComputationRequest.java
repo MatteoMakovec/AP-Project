@@ -32,7 +32,7 @@ public class ComputationRequest extends Request{
         for (int l=3; l<formatRequest.length; l++){
             expressions.add(formatRequest[l]);
         }
-        ExpressionsDomain expressionsDomain = new ExpressionsDomain(formatRequest[1], new VariablesDomain(formatRequest[2]).domainGenerator(), expressions);
+        ExpressionsDomain expressionsDomain = new ExpressionsDomain(formatRequest[1], new VariablesDomain(formatRequest[2]).domainGenerator());
 
         return expressionsDomain.expressionDomainProcessing().toString();
     }

@@ -5,12 +5,10 @@ import java.util.*;
 public class ExpressionsDomain {
     private Map<String, double[]> variablesDomain;
     private String valuesKind;
-    private List<String> expressions;
 
-    public ExpressionsDomain(String valuesKind, Map<String, double[]> variablesDomain, List<String> expressions) {
+    public ExpressionsDomain(String valuesKind, Map<String, double[]> variablesDomain) {
         this.valuesKind = valuesKind;
         this.variablesDomain = variablesDomain;
-        this.expressions = expressions;
     }
 
     private List<List<Double>> makeGrid() {

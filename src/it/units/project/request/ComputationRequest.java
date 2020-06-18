@@ -1,5 +1,7 @@
 package it.units.project.request;
 
+import it.units.project.response.SuccessfulResponse;
+
 import java.util.*;
 
 public class ComputationRequest extends Request{
@@ -8,7 +10,7 @@ public class ComputationRequest extends Request{
     }
 
     public String process(Request r){
-        return inputProcessing(r.input);
+        return new SuccessfulResponse(r, inputProcessing(r.input)).buildingResponse();
     }
 
     private String inputProcessing(String input){
@@ -33,7 +35,7 @@ public class ComputationRequest extends Request{
             expressions.add(formatRequest[l]);
         }
         ExpressionsDomain expressionsDomain = new ExpressionsDomain(formatRequest[1], new VariablesDomain(formatRequest[2]).domainGenerator());
-
-        return expressionsDomain.expressionDomainProcessing().toString();
+        Computation c = new Computation(formatRequest[0], expressions, expressionsDomain);
+        return c.compute();
     }
 }

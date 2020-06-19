@@ -30,7 +30,7 @@ public class ClientHandler extends Thread {
                     System.err.println("Client abruptly closed connection");
                     break;
                 }
-                if (line.toUpperCase().equals(server.getQuitCommand())) {
+                if (line.equals(server.getQuitCommand())) {
                     socket.close();
                     break;
                 }

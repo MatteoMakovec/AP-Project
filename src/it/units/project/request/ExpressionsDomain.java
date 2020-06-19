@@ -3,7 +3,7 @@ package it.units.project.request;
 import java.util.*;
 
 public class ExpressionsDomain {
-    private Map<String, double[]> variablesDomain;
+    public Map<String, double[]> variablesDomain;
     private String valuesKind;
 
     public ExpressionsDomain(String valuesKind, Map<String, double[]> variablesDomain) {

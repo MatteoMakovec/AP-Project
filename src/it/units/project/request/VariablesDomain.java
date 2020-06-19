@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class VariablesDomain {
-    private String[] variablesValues;
+    public String[] variablesValues;
 
     public VariablesDomain(String values){
         variablesValues = variableValuesProcessing(values);

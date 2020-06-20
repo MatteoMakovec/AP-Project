@@ -1,24 +1,32 @@
 package it.units.project.request;
 
+import it.units.project.exception.BadDomainDefinition;
+import it.units.project.exception.CommandException;
+import it.units.project.exception.MalformedInputRequest;
 import it.units.project.response.SuccessfulResponse;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
+
 
 public class ComputationRequest extends Request{
-    public ComputationRequest(String regex, long time){
+    public ComputationRequest(String regex, double time){
         super(regex, time);
     }
 
-    public String process(Request r){
+    public String process(Request r) throws MalformedInputRequest, BadDomainDefinition, CommandException {
         return new SuccessfulResponse(r, inputProcessing(r.input)).buildingResponse();
     }
 
-    private String inputProcessing(String input){
+    private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException {
         StringTokenizer computationRequest = new StringTokenizer(input, "_;");
         int totalTokens = computationRequest.countTokens();
         if(totalTokens < 4){
-            System.err.println("ERROR");
             // TODO: errore, devono esserci 4 tokens
+            System.err.println("["+new Date()+"] Some computation specifications are missing");
+            throw new MalformedInputRequest("Some computation specifications are missing");
         }
         String[] formatRequest = new String[totalTokens];
         int i = 0;

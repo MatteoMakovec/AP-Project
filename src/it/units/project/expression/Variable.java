@@ -1,7 +1,6 @@
 package it.units.project.expression;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public class Variable extends Node {

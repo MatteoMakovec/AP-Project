@@ -1,5 +1,8 @@
 package it.units.project.request;
 
+import it.units.project.exception.BadDomainDefinition;
+
+import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -7,7 +10,7 @@ import java.util.StringTokenizer;
 public class VariablesDomain {
     public String[] variablesValues;
 
-    public VariablesDomain(String values){
+    public VariablesDomain(String values) throws BadDomainDefinition {
         variablesValues = variableValuesProcessing(values);
     }
 
@@ -26,7 +29,7 @@ public class VariablesDomain {
         return domain;
     }
 
-    private String[] variableValuesProcessing(String input){
+    private String[] variableValuesProcessing(String input) throws BadDomainDefinition {
         StringTokenizer variables = new StringTokenizer(input, ",");
         int totalTokens = variables.countTokens();
         String[] variablesDefinition = new String[totalTokens*4];
@@ -36,13 +39,19 @@ public class VariablesDomain {
             while (variables.hasMoreTokens()) {
                 StringTokenizer items = new StringTokenizer(variables.nextToken(), ":");
                 if(items.countTokens() != 4){
-                    System.err.println("ERROR");
                     // TODO: errore, devono esserci 4 tokens
+                    System.err.println("["+new Date()+"] Bad definition of variable's domain");
+                    throw new BadDomainDefinition("Bad definition of variable's domain");
                 }
                 int j = 0;
                 while (items.hasMoreTokens()) {
                     variablesDefinition[i+j] = items.nextToken();
                     j++;
+                }
+                if(Double.parseDouble(variablesDefinition[i+2]) <= 0){
+                    // TODO: errore, devono esserci 4 tokens
+                    System.err.println("["+new Date()+"] Variable's Xstep mustn't be less or equal zero");
+                    throw new BadDomainDefinition("Variable's Xstep mustn't be less or equal zero");
                 }
                 i+=4;
             }

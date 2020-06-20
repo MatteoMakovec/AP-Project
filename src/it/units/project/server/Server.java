@@ -3,8 +3,9 @@ package it.units.project.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 
-public class Server {
+public class Server implements CommandProcessor{
     private final int port;
     private final String quitCommand;
 
@@ -13,7 +14,7 @@ public class Server {
         this.quitCommand = quitCommand;
     }
 
-    public void start () throws IOException {
+    public void start () throws IOException{
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket socket;
@@ -22,7 +23,7 @@ public class Server {
                     ClientHandler clientHandler = new ClientHandler(socket, this);
                     clientHandler.start();
                 } catch (IOException e) {
-                    System.err.printf("Cannot accept connection due to %s", e);
+                    System.err.printf("["+new Date()+"] Cannot accept connection due to %s", e);
                 }
             }
         }

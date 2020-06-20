@@ -4,7 +4,12 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Server server = new Server(10000, "BYE");
-        server.start();
+        if(args.length == 0){
+            System.out.println("You should set the port number");
+        }
+        else{
+            Server server = new Server(Integer.valueOf(args[0]), "BYE");
+            server.start();
+        }
     }
 }

@@ -1,7 +1,10 @@
 package it.units.project.request;
 
+import it.units.project.exception.BadDomainDefinition;
+import it.units.project.exception.CommandException;
 import it.units.project.expression.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
@@ -17,7 +20,7 @@ public class Computation {
         this.computationKind = computationKind;
     }
 
-    public String compute(){
+    public String compute() throws BadDomainDefinition, CommandException {
         String result = "";
         List<List<Double>> expressionDomain = expressionsDomain.expressionDomainProcessing();
 
@@ -69,8 +72,9 @@ public class Computation {
                 break;
 
             default:
-                System.err.println("Protocollo non rispettato");
                 // TODO: ERRORE, protocollo non rispettato
+                System.err.println("["+new Date()+"] Protocol's computation kind format not met");
+                throw new CommandException("Protocol's computation kind format not met");
         }
         return result;
     }

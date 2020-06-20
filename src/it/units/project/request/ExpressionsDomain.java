@@ -1,6 +1,14 @@
 package it.units.project.request;
 
-import java.util.*;
+import it.units.project.exception.BadDomainDefinition;
+import it.units.project.exception.CommandException;
+
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 public class ExpressionsDomain {
     public Map<String, double[]> variablesDomain;
@@ -25,14 +33,14 @@ public class ExpressionsDomain {
         return cartesianProduct(tuples);
     }
 
-    private List<List<Double>> makeList() {
+    private List<List<Double>> makeList() throws BadDomainDefinition {
         List<List<Double>> tuples = new ArrayList<>();
         Set<String> variablesNames = variablesDomain.keySet();
         int domainSize = haveSameSize();
         if (domainSize == -1) {
-            System.err.println("ERRORE: i domini delle due variabili non hanno la stessa grandezza");
-            return Collections.emptyList();
             // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
+            System.err.println("["+new Date()+"] Variables don't have the same domain size");
+            throw new BadDomainDefinition("Variables don't have the same domain size");
         }
         for(int j=0; j<domainSize; j++){
             List<Double> nupla = new ArrayList<>();
@@ -45,7 +53,7 @@ public class ExpressionsDomain {
         return tuples;
     }
 
-    public List<List<Double>> expressionDomainProcessing() {
+    public List<List<Double>> expressionDomainProcessing() throws BadDomainDefinition, CommandException {
         List<List<Double>> expressionsDomain;
         switch (valuesKind.toUpperCase()) {
             case "GRID":
@@ -57,10 +65,9 @@ public class ExpressionsDomain {
                 break;
 
             default:
-                System.err.println("Protocollo non rispettato");
-                expressionsDomain = Collections.emptyList();
-                return Collections.emptyList();
                 // TODO: ERRORE, protocollo non rispettato
+                System.err.println("["+new Date()+"] Protocol's values kind format not met");
+                throw new CommandException("Protocol's values kind format not met");
         }
         return expressionsDomain;
     }

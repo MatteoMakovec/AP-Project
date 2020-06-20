@@ -14,8 +14,6 @@ public class ComputationRequest extends Request{
     }
 
     private String inputProcessing(String input){
-        String result = "";
-
         StringTokenizer computationRequest = new StringTokenizer(input, "_;");
         int totalTokens = computationRequest.countTokens();
         if(totalTokens < 4){
@@ -29,7 +27,6 @@ public class ComputationRequest extends Request{
             i++;
         }
 
-        // TODO: Computazione del valore voluto
         List<String> expressions = new ArrayList<>();
         for (int l=3; l<formatRequest.length; l++){
             expressions.add(formatRequest[l]);

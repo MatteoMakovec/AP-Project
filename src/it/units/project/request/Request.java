@@ -3,9 +3,6 @@ package it.units.project.request;
 import it.units.project.exception.BadDomainDefinition;
 import it.units.project.exception.CommandException;
 import it.units.project.exception.MalformedInputRequest;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collection;
 
 public abstract class Request {
@@ -29,7 +26,7 @@ public abstract class Request {
 
     public double closeRequest(boolean state) {
         this.state = state;
-        processTime = BigDecimal.valueOf((System.nanoTime() - processTime)/ 1_000_000_000.0).setScale(4, RoundingMode.HALF_UP).doubleValue();
+        processTime = (System.nanoTime() - processTime)/ 1_000_000_000.0;
 
         return processTime;
     }

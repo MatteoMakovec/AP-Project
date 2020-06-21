@@ -10,6 +10,6 @@ public class SuccessfulResponse extends ResponseBuilder{
     public String buildingResponse(){
         String returnFormat = "OK";
 
-        return returnFormat+separator+request.closeRequest(true)+separator+toBuild;
+        return returnFormat+separator+String.format("%.5f", request.closeRequest(true))+separator+toBuild;
     }
 }

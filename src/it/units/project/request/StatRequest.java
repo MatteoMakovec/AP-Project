@@ -41,7 +41,7 @@ public class StatRequest extends Request{
                 else{
                     average_time = BigDecimal.valueOf(total_time / requests.size()).setScale(3, RoundingMode.HALF_UP).doubleValue();
                 }
-                result = new SuccessfulResponse(r, Double.toString(average_time)).buildingResponse();
+                result = new SuccessfulResponse(r, String.format("%.5f", average_time)).buildingResponse();
                 break;
 
             case "STAT_MAX_TIME":
@@ -51,7 +51,8 @@ public class StatRequest extends Request{
                         max_time = request.processTime;
                     }
                 }
-                result = new SuccessfulResponse(r, Double.toString(max_time)).buildingResponse();
+                //Double.toString(max_time)
+                result = new SuccessfulResponse(r, String.format("%.5f", max_time)).buildingResponse();
                 break;
 
             default:

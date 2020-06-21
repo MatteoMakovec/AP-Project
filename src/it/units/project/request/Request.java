@@ -2,6 +2,7 @@ package it.units.project.request;
 
 import it.units.project.exception.BadDomainDefinition;
 import it.units.project.exception.CommandException;
+import it.units.project.exception.ComputationException;
 import it.units.project.exception.MalformedInputRequest;
 import java.util.Collection;
 
@@ -11,7 +12,7 @@ public abstract class Request {
     protected boolean state;
     protected Collection<Request> requests;
 
-    public abstract String process(Request r) throws CommandException, MalformedInputRequest, BadDomainDefinition;
+    public abstract String process(Request r) throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
 
     public Request(String regex, double time){
         input = regex;

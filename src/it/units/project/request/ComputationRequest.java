@@ -2,6 +2,7 @@ package it.units.project.request;
 
 import it.units.project.exception.BadDomainDefinition;
 import it.units.project.exception.CommandException;
+import it.units.project.exception.ComputationException;
 import it.units.project.exception.MalformedInputRequest;
 import it.units.project.response.SuccessfulResponse;
 
@@ -16,11 +17,11 @@ public class ComputationRequest extends Request{
         super(regex, time);
     }
 
-    public String process(Request r) throws MalformedInputRequest, BadDomainDefinition, CommandException {
+    public String process(Request r) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
         return new SuccessfulResponse(r, inputProcessing(r.input)).buildingResponse();
     }
 
-    private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException {
+    private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
         StringTokenizer computationRequest = new StringTokenizer(input, "_;");
         int totalTokens = computationRequest.countTokens();
         if(totalTokens < 4){

@@ -2,6 +2,7 @@ package it.units.project.request;
 
 import it.units.project.exception.BadDomainDefinition;
 import it.units.project.exception.CommandException;
+import it.units.project.exception.ComputationException;
 import it.units.project.expression.*;
 
 import java.util.Date;
@@ -20,7 +21,7 @@ public class Computation {
         this.computationKind = computationKind;
     }
 
-    public String compute() throws BadDomainDefinition, CommandException {
+    public String compute() throws BadDomainDefinition, CommandException, ComputationException {
         String result = "";
         List<List<Double>> expressionDomain = expressionsDomain.expressionDomainProcessing();
 
@@ -79,7 +80,7 @@ public class Computation {
         return result;
     }
 
-    private double computation(String stringToProcess, List<Double> nupla){
+    private double computation(String stringToProcess, List<Double> nupla) throws ComputationException {
         double value = 0;
         Node n = new Parser(stringToProcess).parse();
 
@@ -94,10 +95,15 @@ public class Computation {
 
         if(n instanceof Variable){
             Object[] indexes = expressionsDomain.variablesDomain.keySet().toArray();
+            boolean control = false;
             for (int i=0; i<indexes.length; i++){
                 if(indexes[i].equals(((Variable) n).getName())){
                     value = nupla.get(i);
+                    control = true;
                 }
+            }
+            if (control == false){
+                throw new ComputationException("Unvalued variable " + ((Variable) n).getName());
             }
             return value;
         }

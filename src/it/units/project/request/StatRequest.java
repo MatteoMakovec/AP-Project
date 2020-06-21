@@ -8,18 +8,18 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Date;
 
-public class StatRequest extends Request{
-    public StatRequest(String regex, double time, Collection<Request> requests){
+public class StatRequest extends AbstractRequest {
+    public StatRequest(String regex, double time, Collection<AbstractRequest> requests){
         super(regex, time, requests);
     }
 
-    public String process(Request r) throws CommandException{
+    public String process(AbstractRequest r) throws CommandException{
         String result;
 
         switch (input){
             case "STAT_REQS":
                 int numberOfSuccess = 0;
-                for(Request request : requests){
+                for(AbstractRequest request : requests){
                     if(request.state == true){
                         numberOfSuccess++;
                     }
@@ -29,7 +29,7 @@ public class StatRequest extends Request{
 
             case "STAT_AVG_TIME":
                 double total_time = 0;
-                for(Request request : requests){
+                for(AbstractRequest request : requests){
                     if(request.state == true){
                         total_time += request.processTime;
                     }
@@ -46,7 +46,7 @@ public class StatRequest extends Request{
 
             case "STAT_MAX_TIME":
                 double max_time = 0;
-                for(Request request : requests){
+                for(AbstractRequest request : requests){
                     if((request.state == true)&&(request.processTime > max_time)){
                         max_time = request.processTime;
                     }

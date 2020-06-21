@@ -1,9 +1,9 @@
 package it.units.project.response;
 
-import it.units.project.request.Request;
+import it.units.project.request.AbstractRequest;
 
-public class ErrorResponse extends ResponseBuilder{
-    public ErrorResponse(Request request, String string){
+public class ErrorResponse extends AbstractResponse {
+    public ErrorResponse(AbstractRequest request, String string){
         super(request, string);
     }
 

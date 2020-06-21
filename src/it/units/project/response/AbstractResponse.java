@@ -1,15 +1,15 @@
 package it.units.project.response;
 
-import it.units.project.request.Request;
+import it.units.project.request.AbstractRequest;
 
-public abstract class ResponseBuilder {
+public abstract class AbstractResponse {
     protected String toBuild;
-    protected Request request;
+    protected AbstractRequest request;
     protected char separator = ';';
 
     public abstract String buildingResponse();
 
-    public ResponseBuilder(Request request, String string){
+    public AbstractResponse(AbstractRequest request, String string){
         toBuild = string;
         this.request = request;
     }

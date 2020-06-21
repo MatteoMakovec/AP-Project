@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 
-public class ComputationRequest extends Request{
+public class ComputationRequest extends AbstractRequest {
     public ComputationRequest(String regex, double time){
         super(regex, time);
     }
 
-    public String process(Request r) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
+    public String process(AbstractRequest r) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
         return new SuccessfulResponse(r, inputProcessing(r.input)).buildingResponse();
     }
 

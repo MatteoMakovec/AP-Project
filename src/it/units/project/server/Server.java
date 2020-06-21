@@ -5,7 +5,7 @@ import it.units.project.exception.CommandException;
 import it.units.project.exception.ComputationException;
 import it.units.project.exception.MalformedInputRequest;
 import it.units.project.request.ComputationRequest;
-import it.units.project.request.Request;
+import it.units.project.request.AbstractRequest;
 import it.units.project.request.StatRequest;
 import it.units.project.response.ErrorResponse;
 
@@ -19,7 +19,7 @@ import java.util.Date;
 public class Server implements CommandProcessor{
     private final int port;
     private final String quitCommand;
-    private Collection<Request> requests;   /**
+    private Collection<AbstractRequest> requests;   /**
                                             *       TODO: da modificare sia la collection che la gestione delle STAT REQUEST
                                             *       (occhio alla gestione dell'accesso alla risorsa comune col multithreading)
                                             */
@@ -37,7 +37,7 @@ public class Server implements CommandProcessor{
                 try {
                     socket = serverSocket.accept();
                     System.err.println("["+new Date()+"] New connection from client");
-                    ClientHandler clientHandler = new ClientHandler(socket, this);
+                    ClientHandler clientHandler = new ClientHandler(socket, quitCommand, this);
                     clientHandler.start();
                 } catch (IOException e) {
                     System.err.printf("["+new Date()+"] Cannot accept connection due to %s", e);
@@ -47,7 +47,7 @@ public class Server implements CommandProcessor{
     }
 
     public String process(String input) {
-        Request request = inputProcessing(input);
+        AbstractRequest request = inputProcessing(input);
         String response;
         try {
             response = request.process(request);
@@ -58,11 +58,7 @@ public class Server implements CommandProcessor{
         return response;
     }
 
-    public String getQuitCommand() {
-        return quitCommand;
-    }
-
-    private Request inputProcessing(String request){
+    private AbstractRequest inputProcessing(String request){
         int index = request.indexOf(";");
 
         if (index == -1){
@@ -71,5 +67,9 @@ public class Server implements CommandProcessor{
         else{
             return new ComputationRequest(request, System.nanoTime());
         }
+    }
+
+    public String getQuitCommand() {
+        return quitCommand;
     }
 }

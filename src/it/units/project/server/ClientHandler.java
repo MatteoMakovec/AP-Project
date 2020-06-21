@@ -12,10 +12,12 @@ import java.util.Date;
 public class ClientHandler extends Thread {
     private final Socket socket;
     private final CommandProcessor server;
+    private final String quitCommand;
 
-    public ClientHandler(Socket socket, CommandProcessor server) {
+    public ClientHandler(Socket socket, String quitCommand, CommandProcessor server) {
         this.socket = socket;
         this.server = server;
+        this.quitCommand = quitCommand;
     }
 
     public void run() {
@@ -29,7 +31,7 @@ public class ClientHandler extends Thread {
                     System.err.println("["+new Date()+"] Client abruptly closed connection");
                     break;
                 }
-                if (line.equals(server.getQuitCommand())) {
+                if (line.equals(quitCommand)) {
                     socket.close();
                     System.err.println("["+new Date()+"] Client disconnected");
                     break;

@@ -6,20 +6,20 @@ import it.units.project.exception.ComputationException;
 import it.units.project.exception.MalformedInputRequest;
 import java.util.Collection;
 
-public abstract class Request {
+public abstract class AbstractRequest {
     protected final String input;
     protected double processTime;
     protected boolean state;
-    protected Collection<Request> requests;
+    protected Collection<AbstractRequest> requests;
 
-    public abstract String process(Request r) throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
+    public abstract String process(AbstractRequest r) throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
 
-    public Request(String regex, double time){
+    public AbstractRequest(String regex, double time){
         input = regex;
         processTime = time;
     }
 
-    public Request(String regex, double time, Collection<Request> req){
+    public AbstractRequest(String regex, double time, Collection<AbstractRequest> req){
         input = regex;
         processTime = time;
         requests = req;

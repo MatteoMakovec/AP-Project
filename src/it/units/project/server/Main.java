@@ -9,7 +9,7 @@ public class Main {
             System.err.println("["+new Date()+"] " + "You should set the port number");
         }
         else{
-            Server server = new Server(Integer.valueOf(args[0]), "BYE");
+            Server server = new ProcessingServer(Integer.valueOf(args[0]), "BYE");
             server.start();
         }
     }

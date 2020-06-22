@@ -11,12 +11,12 @@ import java.util.Date;
 
 public class ClientHandler extends Thread {
     private final Socket socket;
-    private final CommandProcessor server;
+    private final CommandProcessor processor;
     private final String quitCommand;
 
     public ClientHandler(Socket socket, String quitCommand, CommandProcessor server) {
         this.socket = socket;
-        this.server = server;
+        this.processor = server;
         this.quitCommand = quitCommand;
     }
 
@@ -36,7 +36,7 @@ public class ClientHandler extends Thread {
                     System.err.println("["+new Date()+"] Client disconnected");
                     break;
                 }
-                String response = server.process(line);
+                String response = processor.process(line);
                 bw.write(response + System.lineSeparator());
                 bw.flush();
             }

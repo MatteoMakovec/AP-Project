@@ -77,7 +77,8 @@ public class Computation {
                 System.err.println("["+new Date()+"] Protocol's computation kind format not met");
                 throw new CommandException("Protocol's computation kind format not met");
         }
-        return result;
+        double res = Double.parseDouble(result);
+        return String.format("%.5f", res);
     }
 
     private double computation(String stringToProcess, List<Double> nupla) throws ComputationException {

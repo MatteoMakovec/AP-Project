@@ -1,16 +1,14 @@
 package it.units.project.response;
 
-import it.units.project.request.AbstractRequest;
 
 public abstract class AbstractResponse {
     protected String toBuild;
-    protected AbstractRequest request;
     protected char separator = ';';
+    protected String totalTime = "totalTime";
 
     public abstract String buildingResponse();
 
-    public AbstractResponse(AbstractRequest request, String string){
+    public AbstractResponse(String string){
         toBuild = string;
-        this.request = request;
     }
 }

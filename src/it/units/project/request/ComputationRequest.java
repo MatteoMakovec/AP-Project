@@ -13,12 +13,12 @@ import java.util.StringTokenizer;
 
 
 public class ComputationRequest extends AbstractRequest {
-    public ComputationRequest(String regex, double time){
-        super(regex, time);
+    public ComputationRequest(String input){
+        super(input);
     }
 
     public String process(AbstractRequest r) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
-        return new SuccessfulResponse(r, inputProcessing(r.request)).buildingResponse();
+        return new SuccessfulResponse(inputProcessing(r.request)).buildingResponse();
     }
 
     private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {

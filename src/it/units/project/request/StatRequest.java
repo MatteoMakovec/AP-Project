@@ -16,7 +16,7 @@ public class StatRequest extends AbstractRequest {
     public String process(AbstractRequest r) throws CommandException{
         String result;
 
-        switch (input){
+        switch (request){
             case "STAT_REQS":
                 int numberOfSuccess = 0;
                 for(AbstractRequest request : requests){

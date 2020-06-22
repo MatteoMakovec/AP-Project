@@ -7,22 +7,22 @@ import it.units.project.exception.MalformedInputRequest;
 import java.util.Collection;
 
 public abstract class AbstractRequest {
-    protected final String input;
+    protected final String request;
     protected double processTime;
     protected boolean state;
     protected Collection<AbstractRequest> requests;
 
     public abstract String process(AbstractRequest r) throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
 
-    public AbstractRequest(String regex, double time){
-        input = regex;
+    public AbstractRequest(String input, double time){
+        request = input;
         processTime = time;
     }
 
-    public AbstractRequest(String regex, double time, Collection<AbstractRequest> req){
-        input = regex;
+    public AbstractRequest(String input, double time, Collection<AbstractRequest> requests){
+        request = input;
         processTime = time;
-        requests = req;
+        this.requests = requests;
     }
 
     public double closeRequest(boolean state) {
@@ -34,6 +34,6 @@ public abstract class AbstractRequest {
 
     @Override
     public String toString() {
-        return input;
+        return request;
     }
 }

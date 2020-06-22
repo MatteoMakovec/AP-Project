@@ -18,7 +18,7 @@ public class ComputationRequest extends AbstractRequest {
     }
 
     public String process(AbstractRequest r) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
-        return new SuccessfulResponse(r, inputProcessing(r.input)).buildingResponse();
+        return new SuccessfulResponse(r, inputProcessing(r.request)).buildingResponse();
     }
 
     private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {

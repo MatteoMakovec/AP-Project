@@ -19,6 +19,7 @@ import java.util.Date;
 public class Server implements CommandProcessor{
     private final int port;
     private final String quitCommand;
+    private double[] stats;
     private Collection<AbstractRequest> requests;   /**
                                             *       TODO: da modificare sia la collection che la gestione delle STAT REQUEST
                                             *       (occhio alla gestione dell'accesso alla risorsa comune col multithreading)
@@ -28,6 +29,7 @@ public class Server implements CommandProcessor{
         this.port = port;
         this.quitCommand = quitCommand;
         requests = new ArrayList<>();
+        stats = new double[3];
     }
 
     public void start () throws IOException{
@@ -47,13 +49,26 @@ public class Server implements CommandProcessor{
     }
 
     public String process(String input) {
-        AbstractRequest request = inputProcessing(input);
+        AbstractRequest request;
+        int index = input.indexOf(";");
         String response;
-        try {
-            response = request.process(request);
-        } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException e){
-            response = new ErrorResponse(request, "("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
+        if (index == -1){
+            request = new StatRequest(input, System.nanoTime(), requests);
+            try {
+                response = request.process(request);
+            } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException e){
+                response = new ErrorResponse(request, "("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
+            }
         }
+        else{       // TODO: Da implementare l'Executor per far partire massimo n computazioni, dove n è il numero di core disponibili alla JVM
+            request = new ComputationRequest(input, System.nanoTime());
+            try {
+                response = request.process(request);
+            } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException e){
+                response = new ErrorResponse(request, "("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
+            }
+        }
+
         requests.add(request);
         return response;
     }

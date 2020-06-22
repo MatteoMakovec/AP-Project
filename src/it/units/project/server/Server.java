@@ -52,6 +52,7 @@ public class Server implements CommandProcessor{
         AbstractRequest request;
         int index = input.indexOf(";");
         String response;
+
         if (index == -1){
             request = new StatRequest(input, System.nanoTime(), requests);
             try {
@@ -71,17 +72,6 @@ public class Server implements CommandProcessor{
 
         requests.add(request);
         return response;
-    }
-
-    private AbstractRequest inputProcessing(String request){
-        int index = request.indexOf(";");
-
-        if (index == -1){
-            return new StatRequest(request, System.nanoTime(), requests);
-        }
-        else{
-            return new ComputationRequest(request, System.nanoTime());
-        }
     }
 
     public String getQuitCommand() {

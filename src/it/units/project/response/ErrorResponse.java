@@ -8,7 +8,6 @@ public class ErrorResponse extends AbstractResponse {
 
     public String buildingResponse(){
         String returnFormat = "ERR";
-
         return returnFormat+separator+toBuild;
     }
 }

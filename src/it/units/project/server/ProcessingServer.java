@@ -11,71 +11,36 @@ import it.units.project.response.ErrorResponse;
 
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ProcessingServer extends Server{
-    public static ExecutorService executorService;
+    private double[] stats;
+    private double[] statsRetrieved;
 
     public ProcessingServer(int port, String quitCommand) {
         super(port, quitCommand);
-        executorService = Executors.newFixedThreadPool(1);
+        stats = new double[3];
     }
 
     @Override
     public String process(String input) {
+        int separatorIndex = input.indexOf(";");
         AbstractRequest request;
-        int index = input.indexOf(";");
         String response;
-        double startTime = System.nanoTime();
 
-        double[] provvStats;
         synchronized (stats) {
-            provvStats = stats;
+            statsRetrieved = stats;
         }
 
-        if (index == -1){
-            request = new StatRequest(input, provvStats);
-            try {
-                response = request.process();
-                double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
-                response = response.replace("totalTime", String.format("%.5f", totalTime));
-                provvStats[0] += 1;
-                provvStats[1] += totalTime;
-                if (totalTime > provvStats[2]){
-                    provvStats[2] = totalTime;
-                }
-                synchronized (stats) {
-                    stats = provvStats;
-                }
-            } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException | IllegalArgumentException e){
-                response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
-            }
+        if (separatorIndex == -1){
+            request = new StatRequest(input, statsRetrieved);
+            response = requestProcessing(request);
         }
         else{
             request = new ComputationRequest(input);
             Future<String> future = executorService.submit(() -> {
-                String provvResponse = "";
-                Thread.sleep(5000);
-                try {
-                    provvResponse = request.process();
-                    double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
-                    provvResponse = provvResponse.replace("totalTime", String.format("%.5f", totalTime));
-                    stats[0] += 1;
-                    stats[1] += totalTime;
-                    if (totalTime > stats[2]) {
-                        stats[2] = totalTime;
-                    }
-                    synchronized (stats) {
-                        stats = provvStats;
-                    }
-                } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException | IllegalArgumentException e) {
-                    provvResponse = new ErrorResponse("(" + e.getClass().getSimpleName() + ") " + e.getMessage()).buildingResponse();
-                }
-                finally {
-                    return provvResponse;
-                }
+                String provvResponse = requestProcessing(request);
+                return provvResponse;
             });
             try{
                 response = future.get();
@@ -84,7 +49,28 @@ public class ProcessingServer extends Server{
                 response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
             }
         }
+        return response;
+    }
 
+    private String requestProcessing(AbstractRequest request){
+        String response;
+        double startTime = System.nanoTime();
+
+        try {
+            response = request.process();
+            double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
+            response = response.replace("totalTime", String.format("%.6f", totalTime));
+            statsRetrieved[0] += 1;
+            statsRetrieved[1] += totalTime;
+            if (totalTime > statsRetrieved[2]){
+                statsRetrieved[2] = totalTime;
+            }
+            synchronized (stats) {
+                stats = statsRetrieved;
+            }
+        } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException | IllegalArgumentException e){
+            response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
+        }
         return response;
     }
 }

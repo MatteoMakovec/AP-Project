@@ -22,11 +22,11 @@ public class ClientHandler extends Thread {
 
     public void run() {
         try (socket;
-             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             ) {
             while (true) {
-                String line = br.readLine();
+                String line = bufferedReader.readLine();
                 if (line == null) {
                     System.err.println("["+new Date()+"] Client abruptly closed connection");
                     break;
@@ -36,16 +36,11 @@ public class ClientHandler extends Thread {
                     System.err.println("["+new Date()+"] Client disconnected");
                     break;
                 }
-                String response = processor.process(line);
-                bw.write(response + System.lineSeparator());
-                bw.flush();
-                System.out.println("["+new Date()+"] " + response);
+                bufferedWriter.write(processor.process(line) + System.lineSeparator());
+                bufferedWriter.flush();
             }
         } catch (IOException e) {
             System.err.println("["+new Date()+"]"+" ("+e.getClass().getSimpleName()+") "+e.getMessage());
-        }
-        finally {
-            ProcessingServer.executorService.shutdown();
         }
     }
 }

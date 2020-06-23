@@ -4,16 +4,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server implements CommandProcessor {
     protected final int port;
     protected final String quitCommand;
-    protected double[] stats;
+    protected static ExecutorService executorService;
 
     public Server(int port, String quitCommand) {
         this.port = port;
         this.quitCommand = quitCommand;
-        stats = new double[3];
+        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     public void start () throws IOException {
@@ -29,6 +31,8 @@ public class Server implements CommandProcessor {
                     System.err.printf("["+new Date()+"] Cannot accept connection due to %s", e);
                 }
             }
+        } finally {
+            executorService.shutdown();
         }
     }
 

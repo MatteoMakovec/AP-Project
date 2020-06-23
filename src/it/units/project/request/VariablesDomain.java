@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class VariablesDomain {
-    private final String VARIABLES_NAME_REGEX = "[a-z][a-z0-9]*";
+    private final String variablesNameRegex = "[a-z][a-z0-9]*";
     public String[] variablesValues;
 
     public VariablesDomain(String values) throws BadDomainDefinition {
@@ -26,7 +26,6 @@ public class VariablesDomain {
             }
             domain.put(variablesValues[i], values);
         }
-
         return domain;
     }
 
@@ -40,7 +39,6 @@ public class VariablesDomain {
             while (variables.hasMoreTokens()) {
                 StringTokenizer items = new StringTokenizer(variables.nextToken(), ":");
                 if (items.countTokens() != 4){
-                    // TODO: errore, devono esserci 4 tokens
                     System.err.println("["+new Date()+"] Bad definition of variable's domain");
                     throw new BadDomainDefinition("Bad definition of variable's domain");
                 }
@@ -49,20 +47,17 @@ public class VariablesDomain {
                     variablesDefinition[i+j] = items.nextToken();
                     j++;
                 }
-                if (Double.parseDouble(variablesDefinition[i+2]) <= 0) {
-                    // TODO: errore, devono esserci 4 tokens
-                    System.err.println("["+new Date()+"] Variable's Xstep mustn't be less or equal zero");
-                    throw new BadDomainDefinition("Variable's Xstep mustn't be less or equal zero");
-                }
-                if(!variablesDefinition[i].matches(VARIABLES_NAME_REGEX)){
-                    // TODO: errore, il nome di una variabile deve iniziare con una lettera  (provare a fare questa verifica con i regex)
+                if(!variablesDefinition[i].matches(variablesNameRegex)){
                     System.err.println("["+new Date()+"] Variable's name must begin with a letter");
                     throw new BadDomainDefinition("Variable's name must begin with a letter");
+                }
+                if (Double.parseDouble(variablesDefinition[i+2]) <= 0) {
+                    System.err.println("["+new Date()+"] Variable's Xstep mustn't be less or equal zero");
+                    throw new BadDomainDefinition("Variable's Xstep mustn't be less or equal zero");
                 }
                 i+=4;
             }
         }
-
         return variablesDefinition;
     }
 }

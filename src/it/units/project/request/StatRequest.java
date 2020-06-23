@@ -19,15 +19,14 @@ public class StatRequest extends AbstractRequest {
                 break;
 
             case "STAT_AVG_TIME":
-                result = new SuccessfulResponse(String.format("%.5f", (stats[1] / stats[0]))).buildingResponse();
+                result = new SuccessfulResponse(String.format("%.6f", (stats[1] / stats[0]))).buildingResponse();
                 break;
 
             case "STAT_MAX_TIME":
-                result = new SuccessfulResponse(Double.toString(stats[2])).buildingResponse();
+                result = new SuccessfulResponse(String.format("%.6f", stats[2])).buildingResponse();
                 break;
 
             default:
-                // TODO: gestire l'eccezione
                 System.err.println("["+new Date()+"] Command not in protocol specification");
                 throw new CommandException("Command not in protocol specification");
         }

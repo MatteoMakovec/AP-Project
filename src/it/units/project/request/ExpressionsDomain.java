@@ -19,16 +19,34 @@ public class ExpressionsDomain {
         this.variablesDomain = variablesDomain;
     }
 
+    public List<List<Double>> expressionDomainProcessing() throws BadDomainDefinition, CommandException {
+        List<List<Double>> expressionsDomain;
+        switch (valuesKind) {
+            case "GRID":
+                expressionsDomain = makeGrid();
+                break;
+
+            case "LIST":
+                expressionsDomain = makeList();
+                break;
+
+            default:
+                System.err.println("["+new Date()+"] Protocol's values kind format not met");
+                throw new CommandException("Protocol's values kind format not met");
+        }
+        return expressionsDomain;
+    }
+
     private List<List<Double>> makeGrid() {
         List<List<Double>> tuples = new ArrayList<>();
         Set<String> variablesNames = variablesDomain.keySet();
         for (String name : variablesNames) {
-            double[] d = variablesDomain.get(name);
-            List<Double> nupla = new ArrayList<>();
-            for (double dd : d) {
-                nupla.add(dd);
+            double[] values = variablesDomain.get(name);
+            List<Double> tuple = new ArrayList<>();
+            for (double value : values) {
+                tuple.add(value);
             }
-            tuples.add(nupla);
+            tuples.add(tuple);
         }
         return cartesianProduct(tuples);
     }
@@ -38,7 +56,6 @@ public class ExpressionsDomain {
         Set<String> variablesNames = variablesDomain.keySet();
         int domainSize = haveSameSize();
         if (domainSize == -1) {
-            // TODO: ERRORE, i domini delle due variabili non hanno la stessa grandezza
             System.err.println("["+new Date()+"] Variables don't have the same domain size");
             throw new BadDomainDefinition("Variables don't have the same domain size");
         }
@@ -51,25 +68,6 @@ public class ExpressionsDomain {
             tuples.add(nupla);
         }
         return tuples;
-    }
-
-    public List<List<Double>> expressionDomainProcessing() throws BadDomainDefinition, CommandException {
-        List<List<Double>> expressionsDomain;
-        switch (valuesKind.toUpperCase()) {
-            case "GRID":
-                expressionsDomain = makeGrid();
-                break;
-
-            case "LIST":
-                expressionsDomain = makeList();
-                break;
-
-            default:
-                // TODO: ERRORE, protocollo non rispettato
-                System.err.println("["+new Date()+"] Protocol's values kind format not met");
-                throw new CommandException("Protocol's values kind format not met");
-        }
-        return expressionsDomain;
     }
 
     private <T> List<List<T>> cartesianProduct(List<List<T>> lists) {

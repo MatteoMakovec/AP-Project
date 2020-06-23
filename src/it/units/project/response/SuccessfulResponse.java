@@ -8,7 +8,6 @@ public class SuccessfulResponse extends AbstractResponse {
 
     public String buildingResponse(){
         String returnFormat = "OK";
-
         return returnFormat+separator+totalTime+separator+toBuild;
     }
 }

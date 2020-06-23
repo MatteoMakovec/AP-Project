@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.Callable;
 
 
 public class ComputationRequest extends AbstractRequest {
@@ -17,11 +18,16 @@ public class ComputationRequest extends AbstractRequest {
         super(input);
     }
 
-    public String process(AbstractRequest r) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
-        return new SuccessfulResponse(inputProcessing(r.request)).buildingResponse();
+    public String process() throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException, IllegalArgumentException {
+        return new SuccessfulResponse(inputProcessing(request)).buildingResponse();
     }
 
-    private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
+    /*
+    public String call() throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException, IllegalArgumentException{
+        return process();
+    }*/
+
+    private String inputProcessing(String input) throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException, IllegalArgumentException {
         StringTokenizer computationRequest = new StringTokenizer(input, "_;");
         int totalTokens = computationRequest.countTokens();
         if(totalTokens < 4){

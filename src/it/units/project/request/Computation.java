@@ -21,7 +21,7 @@ public class Computation {
         this.computationKind = computationKind;
     }
 
-    public String compute() throws BadDomainDefinition, CommandException, ComputationException {
+    public String compute() throws BadDomainDefinition, CommandException, ComputationException, IllegalArgumentException {
         String result = "";
         List<List<Double>> expressionDomain = expressionsDomain.expressionDomainProcessing();
 
@@ -77,11 +77,10 @@ public class Computation {
                 System.err.println("["+new Date()+"] Protocol's computation kind format not met");
                 throw new CommandException("Protocol's computation kind format not met");
         }
-        double res = Double.parseDouble(result);
-        return String.format("%.5f", res);
+        return String.format("%.5f", Double.parseDouble(result));
     }
 
-    private double computation(String stringToProcess, List<Double> nupla) throws ComputationException {
+    private double computation(String stringToProcess, List<Double> nupla) throws ComputationException, IllegalArgumentException {
         double value = 0;
         Node n = new Parser(stringToProcess).parse();
 

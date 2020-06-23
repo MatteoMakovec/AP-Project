@@ -10,7 +10,7 @@ public class StatRequest extends AbstractRequest {
         super(regex, stats);
     }
 
-    public String process(AbstractRequest r) throws CommandException{
+    public String process() throws CommandException{
         String result;
 
         switch (request){

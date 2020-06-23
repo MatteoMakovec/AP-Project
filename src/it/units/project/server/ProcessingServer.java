@@ -9,9 +9,18 @@ import it.units.project.request.ComputationRequest;
 import it.units.project.request.StatRequest;
 import it.units.project.response.ErrorResponse;
 
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class ProcessingServer extends Server{
+    public static ExecutorService executorService;
+
     public ProcessingServer(int port, String quitCommand) {
         super(port, quitCommand);
+        executorService = Executors.newFixedThreadPool(1);
     }
 
     @Override
@@ -29,7 +38,7 @@ public class ProcessingServer extends Server{
         if (index == -1){
             request = new StatRequest(input, provvStats);
             try {
-                response = request.process(request);
+                response = request.process();
                 double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
                 response = response.replace("totalTime", String.format("%.5f", totalTime));
                 provvStats[0] += 1;
@@ -40,25 +49,38 @@ public class ProcessingServer extends Server{
                 synchronized (stats) {
                     stats = provvStats;
                 }
-            } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException e){
+            } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException | IllegalArgumentException e){
                 response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
             }
         }
-        else{       // TODO: Da implementare l'Executor per far partire massimo n computazioni, dove n è il numero di core disponibili alla JVM
+        else{
             request = new ComputationRequest(input);
-            try {
-                response = request.process(request);
-                double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
-                response = response.replace("totalTime", String.format("%.5f", totalTime));
-                stats[0] += 1;
-                stats[1] += totalTime;
-                if (totalTime > stats[2]){
-                    stats[2] = totalTime;
+            Future<String> future = executorService.submit(() -> {
+                String provvResponse = "";
+                Thread.sleep(5000);
+                try {
+                    provvResponse = request.process();
+                    double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
+                    provvResponse = provvResponse.replace("totalTime", String.format("%.5f", totalTime));
+                    stats[0] += 1;
+                    stats[1] += totalTime;
+                    if (totalTime > stats[2]) {
+                        stats[2] = totalTime;
+                    }
+                    synchronized (stats) {
+                        stats = provvStats;
+                    }
+                } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException | IllegalArgumentException e) {
+                    provvResponse = new ErrorResponse("(" + e.getClass().getSimpleName() + ") " + e.getMessage()).buildingResponse();
                 }
-                synchronized (stats) {
-                    stats = provvStats;
+                finally {
+                    return provvResponse;
                 }
-            } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException e){
+            });
+            try{
+                response = future.get();
+            } catch (InterruptedException | ExecutionException e){
+                System.err.printf("["+new Date()+"] Cannot accept connection due to %s", e);
                 response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
             }
         }

@@ -39,9 +39,13 @@ public class ClientHandler extends Thread {
                 String response = processor.process(line);
                 bw.write(response + System.lineSeparator());
                 bw.flush();
+                System.out.println("["+new Date()+"] " + response);
             }
         } catch (IOException e) {
             System.err.println("["+new Date()+"]"+" ("+e.getClass().getSimpleName()+") "+e.getMessage());
+        }
+        finally {
+            ProcessingServer.executorService.shutdown();
         }
     }
 }

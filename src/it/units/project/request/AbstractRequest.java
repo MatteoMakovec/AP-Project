@@ -9,7 +9,7 @@ public abstract class AbstractRequest {
     protected final String request;
     protected double[] stats;
 
-    public abstract String process(AbstractRequest r) throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
+    public abstract String process() throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
 
     public AbstractRequest(String input){
         request = input;

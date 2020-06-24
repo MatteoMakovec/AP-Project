@@ -33,14 +33,14 @@ public class ClientHandler extends Thread {
                 }
                 if (line.equals(quitCommand)) {
                     socket.close();
-                    System.err.println("["+new Date()+"] Client disconnected");
+                    System.out.println("["+new Date()+"] Client disconnected");
                     break;
                 }
                 bufferedWriter.write(processor.process(line) + System.lineSeparator());
                 bufferedWriter.flush();
             }
         } catch (IOException e) {
-            System.err.println("["+new Date()+"]"+" ("+e.getClass().getSimpleName()+") "+e.getMessage());
+            System.err.println("["+new Date()+"]"+" ("+e.getClass().getSimpleName()+") "+ "Client abruptly closed connection");
         }
     }
 }

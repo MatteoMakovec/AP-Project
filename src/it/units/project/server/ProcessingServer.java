@@ -9,13 +9,13 @@ import it.units.project.request.ComputationRequest;
 import it.units.project.request.StatRequest;
 import it.units.project.response.ErrorResponse;
 
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class ProcessingServer extends Server{
     private double[] stats;
     private double[] statsRetrieved;
+    public static int DECIMAL_PRECISION = 6;
 
     public ProcessingServer(int port, String quitCommand) {
         super(port, quitCommand);
@@ -45,7 +45,6 @@ public class ProcessingServer extends Server{
             try{
                 response = future.get();
             } catch (InterruptedException | ExecutionException e){
-                System.err.printf("["+new Date()+"] Cannot accept connection due to %s", e);
                 response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();
             }
         }
@@ -54,16 +53,13 @@ public class ProcessingServer extends Server{
 
     private String requestProcessing(AbstractRequest request){
         String response;
-        double startTime = System.nanoTime();
 
         try {
             response = request.process();
-            double totalTime = (System.nanoTime() - startTime) / 1_000_000_000.0;
-            response = response.replace("totalTime", String.format("%.6f", totalTime));
             statsRetrieved[0] += 1;
-            statsRetrieved[1] += totalTime;
-            if (totalTime > statsRetrieved[2]){
-                statsRetrieved[2] = totalTime;
+            statsRetrieved[1] += request.time;
+            if (request.time > statsRetrieved[2]){
+                statsRetrieved[2] = request.time;
             }
             synchronized (stats) {
                 stats = statsRetrieved;

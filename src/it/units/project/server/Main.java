@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        if(args.length == 0){
+        if(args.length == 0 || args == null){
             System.err.println("["+new Date()+"] " + "You must set the port number");
         }
         else {

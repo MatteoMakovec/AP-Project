@@ -2,7 +2,6 @@ package it.units.project.request;
 
 import it.units.project.exception.BadDomainDefinition;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -11,15 +10,18 @@ public class VariablesDomain {
     private final String variablesNameRegex = "[a-z][a-z0-9]*";
     public String[] variablesValues;
 
-    public VariablesDomain(String values) throws BadDomainDefinition {
-        variablesValues = variableValuesProcessing(values);
+    public VariablesDomain(String input) throws BadDomainDefinition {
+        variablesValues = variableValuesProcessing(input);
     }
 
-    public Map<String, double[]> domainGenerator(){
+    public Map<String, double[]> domainGenerator() throws BadDomainDefinition {
         Map<String, double[]> domain = new HashMap<>();
 
         for (int i = 0; i < variablesValues.length ; i+=4){
             int domainSize = (int) ((Double.parseDouble(variablesValues[i+3]) - Double.parseDouble(variablesValues[i+1])) / Double.parseDouble(variablesValues[i+2]));
+            if (domainSize < 0) {
+                throw new BadDomainDefinition("It's not possible to create a variable's domain if the value of Xlower is bigger than Xupper");
+            }
             double[] values = new double[domainSize+1];
             for (int j = 0; j <= domainSize; j++){
                 values[j] = Double.parseDouble(variablesValues[i+1]) + j * Double.parseDouble(variablesValues[i+2]);
@@ -39,7 +41,6 @@ public class VariablesDomain {
             while (variables.hasMoreTokens()) {
                 StringTokenizer items = new StringTokenizer(variables.nextToken(), ":");
                 if (items.countTokens() != 4){
-                    System.err.println("["+new Date()+"] Bad definition of variable's domain");
                     throw new BadDomainDefinition("Bad definition of variable's domain");
                 }
                 int j = 0;
@@ -48,11 +49,9 @@ public class VariablesDomain {
                     j++;
                 }
                 if(!variablesDefinition[i].matches(variablesNameRegex)){
-                    System.err.println("["+new Date()+"] Variable's name must begin with a letter");
                     throw new BadDomainDefinition("Variable's name must begin with a letter");
                 }
                 if (Double.parseDouble(variablesDefinition[i+2]) <= 0) {
-                    System.err.println("["+new Date()+"] Variable's Xstep mustn't be less or equal zero");
                     throw new BadDomainDefinition("Variable's Xstep mustn't be less or equal zero");
                 }
                 i+=4;

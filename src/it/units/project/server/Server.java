@@ -24,7 +24,7 @@ public class Server implements CommandProcessor {
                 Socket socket;
                 try {
                     socket = serverSocket.accept();
-                    System.err.println("["+new Date()+"] New connection from client");
+                    System.out.println("["+new Date()+"] New connection from client");
                     ClientHandler clientHandler = new ClientHandler(socket, quitCommand, this);
                     clientHandler.start();
                 } catch (IOException e) {

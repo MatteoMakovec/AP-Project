@@ -5,12 +5,13 @@ import it.units.project.exception.CommandException;
 import it.units.project.exception.ComputationException;
 import it.units.project.expression.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
+import static it.units.project.server.ProcessingServer.DECIMAL_PRECISION;
+
 public class Computation {
-    private final int CHILDREN_LIST_SIZE = 2;
+    private final int childrenListSize = 2;
     private List<String> expressions;
     private ExpressionsDomain expressionsDomain;
     private String computationKind;
@@ -73,10 +74,9 @@ public class Computation {
                 break;
 
             default:
-                System.err.println("["+new Date()+"] Protocol's computation kind format not met");
                 throw new CommandException("Protocol's computation kind format not met");
         }
-        return String.format("%.6f", Double.parseDouble(result));
+        return String.format("%." + DECIMAL_PRECISION + "f", Double.parseDouble(result));
     }
 
     private double valueComputation(String stringToProcess, List<Double> tuple) throws ComputationException, IllegalArgumentException {
@@ -85,9 +85,9 @@ public class Computation {
 
         if(node instanceof Operator){
             Function<double[], Double> function = ((Operator) node).getType().getFunction();
-            double[] values = new double[CHILDREN_LIST_SIZE];
-            for (int l=0; l<CHILDREN_LIST_SIZE; l++){
-                values[l] = valueComputation(node.getChildren().get(l).toString(), tuple);
+            double[] values = new double[childrenListSize];
+            for (int i = 0; i< childrenListSize; i++){
+                values[i] = valueComputation(node.getChildren().get(i).toString(), tuple);
             }
             return function.apply(values);
         }

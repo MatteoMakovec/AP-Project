@@ -31,7 +31,6 @@ public class ExpressionsDomain {
                 break;
 
             default:
-                System.err.println("["+new Date()+"] Protocol's values kind format not met");
                 throw new CommandException("Protocol's values kind format not met");
         }
         return expressionsDomain;
@@ -56,7 +55,6 @@ public class ExpressionsDomain {
         Set<String> variablesNames = variablesDomain.keySet();
         int domainSize = haveSameSize();
         if (domainSize == -1) {
-            System.err.println("["+new Date()+"] Variables don't have the same domain size");
             throw new BadDomainDefinition("Variables don't have the same domain size");
         }
         for(int j=0; j<domainSize; j++){

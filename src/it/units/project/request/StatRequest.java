@@ -3,7 +3,8 @@ package it.units.project.request;
 import it.units.project.exception.CommandException;
 import it.units.project.response.SuccessfulResponse;
 
-import java.util.Date;
+import static it.units.project.server.ProcessingServer.DECIMAL_PRECISION;
+
 
 public class StatRequest extends AbstractRequest {
     public StatRequest(String regex, double[] stats){
@@ -15,19 +16,18 @@ public class StatRequest extends AbstractRequest {
 
         switch (request){
             case "STAT_REQS":
-                result = new SuccessfulResponse(Double.toString(stats[0])).buildingResponse();
+                result = new SuccessfulResponse(Double.toString(stats[0]), time).buildingResponse();
                 break;
 
             case "STAT_AVG_TIME":
-                result = new SuccessfulResponse(String.format("%.6f", (stats[1] / stats[0]))).buildingResponse();
+                result = new SuccessfulResponse(String.format("%." + DECIMAL_PRECISION + "f", (stats[1] / stats[0])), time).buildingResponse();
                 break;
 
             case "STAT_MAX_TIME":
-                result = new SuccessfulResponse(String.format("%.6f", stats[2])).buildingResponse();
+                result = new SuccessfulResponse(String.format("%." + DECIMAL_PRECISION + "f", stats[2]), time).buildingResponse();
                 break;
 
             default:
-                System.err.println("["+new Date()+"] Command not in protocol specification");
                 throw new CommandException("Command not in protocol specification");
         }
         return result;

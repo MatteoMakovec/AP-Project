@@ -3,11 +3,12 @@ package it.units.project.request;
 import it.units.project.exception.BadDomainDefinition;
 import it.units.project.exception.CommandException;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 
 public class ExpressionsDomain {
@@ -41,10 +42,11 @@ public class ExpressionsDomain {
         Set<String> variablesNames = variablesDomain.keySet();
         for (String name : variablesNames) {
             double[] values = variablesDomain.get(name);
-            List<Double> tuple = new ArrayList<>();
+            List<Double> tuple = DoubleStream.of(values).boxed().collect(Collectors.toList());
+            /*List<Double> tuple = new ArrayList<>();
             for (double value : values) {
                 tuple.add(value);
-            }
+            }*/
             tuples.add(tuple);
         }
         return cartesianProduct(tuples);
@@ -58,12 +60,12 @@ public class ExpressionsDomain {
             throw new BadDomainDefinition("Variables don't have the same domain size");
         }
         for(int j=0; j<domainSize; j++){
-            List<Double> nupla = new ArrayList<>();
+            List<Double> tuple = new ArrayList<>();
             for (String name : variablesNames) {
                 double[] d = variablesDomain.get(name);
-                nupla.add(d[j]);
+                tuple.add(d[j]);
             }
-            tuples.add(nupla);
+            tuples.add(tuple);
         }
         return tuples;
     }

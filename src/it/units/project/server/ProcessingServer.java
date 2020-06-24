@@ -39,8 +39,8 @@ public class ProcessingServer extends Server{
         else{
             request = new ComputationRequest(input);
             Future<String> future = executorService.submit(() -> {
-                String provvResponse = requestProcessing(request);
-                return provvResponse;
+                String responseBuilt = requestProcessing(request);
+                return responseBuilt;
             });
             try{
                 response = future.get();

@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        if(args.length == 0){
+        if(args == null){
             System.err.println("["+new Date()+"] " + "You must set the port number");
         }
-        else{
+        else if(args.length != 0){
             Server server = new ProcessingServer(Integer.valueOf(args[0]), "BYE");
             server.start();
         }

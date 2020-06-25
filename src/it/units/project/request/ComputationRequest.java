@@ -16,7 +16,7 @@ public class ComputationRequest extends AbstractRequest {
         super(input);
     }
 
-    public String process() throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException, IllegalArgumentException {
+    public String process() throws MalformedInputRequest, BadDomainDefinition, CommandException, ComputationException {
         StringTokenizer computationRequest = new StringTokenizer(request, "_;");
         int totalTokens = computationRequest.countTokens();
         if(totalTokens < 4){

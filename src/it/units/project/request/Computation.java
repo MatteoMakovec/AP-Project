@@ -23,7 +23,7 @@ public class Computation {
         this.computationKind = computationKind;
     }
 
-    public String compute() throws BadDomainDefinition, CommandException, ComputationException, IllegalArgumentException {
+    public String compute() throws BadDomainDefinition, CommandException, ComputationException {
         String result = "";
         List<List<Double>> expressionDomain = expressionsDomain.expressionDomainProcessing();
 
@@ -77,7 +77,7 @@ public class Computation {
         return String.format(Locale.US,"%." + DECIMAL_PRECISION + "f", Double.parseDouble(result));
     }
 
-    private double valueComputation(String stringToProcess, List<Double> tuple) throws ComputationException, IllegalArgumentException {
+    private double valueComputation(String stringToProcess, List<Double> tuple) throws ComputationException {
         double value = 0;
         Node node = new Parser(stringToProcess).parse();
 

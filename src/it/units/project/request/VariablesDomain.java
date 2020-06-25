@@ -14,17 +14,20 @@ public class VariablesDomain {
         variablesValues = variableValuesProcessing(input);
     }
 
-    public Map<String, double[]> domainGenerator() throws BadDomainDefinition {
+    public Map<String, double[]> domainGenerator(){
         Map<String, double[]> domain = new HashMap<>();
 
         for (int i = 0; i < variablesValues.length ; i+=4){
             int domainSize = (int) ((Double.parseDouble(variablesValues[i+3]) - Double.parseDouble(variablesValues[i+1])) / Double.parseDouble(variablesValues[i+2]));
+            double[] values;
             if (domainSize < 0) {
-                throw new BadDomainDefinition("It's not possible to create a variable's domain if the value of Xlower is bigger than Xupper");
+                values = null;
             }
-            double[] values = new double[domainSize+1];
-            for (int j = 0; j <= domainSize; j++){
-                values[j] = Double.parseDouble(variablesValues[i+1]) + j * Double.parseDouble(variablesValues[i+2]);
+            else{
+                values = new double[domainSize+1];
+                for (int j = 0; j <= domainSize; j++){
+                    values[j] = Double.parseDouble(variablesValues[i+1]) + j * Double.parseDouble(variablesValues[i+2]);
+                }
             }
             domain.put(variablesValues[i], values);
         }

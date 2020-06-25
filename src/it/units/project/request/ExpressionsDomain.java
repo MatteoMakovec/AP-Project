@@ -42,12 +42,10 @@ public class ExpressionsDomain {
         Set<String> variablesNames = variablesDomain.keySet();
         for (String name : variablesNames) {
             double[] values = variablesDomain.get(name);
-            List<Double> tuple = DoubleStream.of(values).boxed().collect(Collectors.toList());
-            /*List<Double> tuple = new ArrayList<>();
-            for (double value : values) {
-                tuple.add(value);
-            }*/
-            tuples.add(tuple);
+            if(values != null){
+                List<Double> tuple = DoubleStream.of(values).boxed().collect(Collectors.toList());
+                tuples.add(tuple);
+            }
         }
         return cartesianProduct(tuples);
     }
@@ -62,8 +60,10 @@ public class ExpressionsDomain {
         for(int j=0; j<domainSize; j++){
             List<Double> tuple = new ArrayList<>();
             for (String name : variablesNames) {
-                double[] d = variablesDomain.get(name);
-                tuple.add(d[j]);
+                double[] values = variablesDomain.get(name);
+                if(values != null){
+                    tuple.add(values[j]);
+                }
             }
             tuples.add(tuple);
         }
@@ -94,11 +94,13 @@ public class ExpressionsDomain {
         Set<String> variablesNames = variablesDomain.keySet();
         int lastLength = -1;
         for (String name : variablesNames) {
-            double[] d = variablesDomain.get(name);
-            if ((lastLength != d.length) && (lastLength != -1)){
-                return -1;
+            double[] values = variablesDomain.get(name);
+            if(values != null){
+                if ((lastLength != values.length) && (lastLength != -1)){
+                    return -1;
+                }
+                lastLength = values.length;
             }
-            lastLength = d.length;
         }
         return lastLength;
     }

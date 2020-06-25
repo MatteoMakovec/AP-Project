@@ -1,20 +1,20 @@
 package it.units.project.response;
 
 
+import it.units.project.request.AbstractRequest;
 import static it.units.project.server.ProcessingServer.DECIMAL_PRECISION;
 
 public class SuccessfulResponse extends AbstractResponse {
-    private double time;
+    private AbstractRequest request;
 
-    public SuccessfulResponse(String string, double time){
+    public SuccessfulResponse(String string, AbstractRequest request){
         super(string);
-        this.time = time;
+        this.request = request;
     }
 
     public String buildingResponse(){
         String returnFormat = "OK";
-        double totalTime = (System.nanoTime() - time) / 1_000_000_000.0;
 
-        return returnFormat+separator+String.format("%." + DECIMAL_PRECISION + "f", totalTime)+separator+toBuild;
+        return returnFormat+separator+String.format("%." + DECIMAL_PRECISION + "f", request.closeRequest())+separator+toBuild;
     }
 }

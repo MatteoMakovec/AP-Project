@@ -35,6 +35,6 @@ public class ComputationRequest extends AbstractRequest {
 
         ExpressionsDomain expressionsDomain = new ExpressionsDomain(computationSpecifications[1], new VariablesDomain(computationSpecifications[2]).domainGenerator());
         Computation c = new Computation(computationSpecifications[0], expressions, expressionsDomain);
-        return new SuccessfulResponse(c.compute(), time).buildingResponse();
+        return new SuccessfulResponse(c.compute(), this).buildingResponse();
     }
 }

@@ -66,10 +66,7 @@ public class Computation {
                 break;
 
             case "COUNT":
-                int domainSize = 0;
-                for (List<Double> tuple : expressionDomain){
-                    domainSize++;
-                }
+                int domainSize = expressionDomain.size();
                 result = String.valueOf(domainSize);
                 break;
 

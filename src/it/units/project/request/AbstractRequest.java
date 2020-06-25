@@ -23,6 +23,11 @@ public abstract class AbstractRequest {
         time = System.nanoTime();
     }
 
+    public double closeRequest(){
+        time = (System.nanoTime() - time) / 1_000_000_000.0;
+        return time;
+    }
+
     @Override
     public String toString() {
         return request;

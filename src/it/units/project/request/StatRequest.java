@@ -16,15 +16,15 @@ public class StatRequest extends AbstractRequest {
 
         switch (request){
             case "STAT_REQS":
-                result = new SuccessfulResponse(Double.toString(stats[0]), time).buildingResponse();
+                result = new SuccessfulResponse(Double.toString(stats[0]), this).buildingResponse();
                 break;
 
             case "STAT_AVG_TIME":
-                result = new SuccessfulResponse(String.format("%." + DECIMAL_PRECISION + "f", (stats[1] / stats[0])), time).buildingResponse();
+                result = new SuccessfulResponse(String.format("%." + DECIMAL_PRECISION + "f", (stats[1] / stats[0])), this).buildingResponse();
                 break;
 
             case "STAT_MAX_TIME":
-                result = new SuccessfulResponse(String.format("%." + DECIMAL_PRECISION + "f", stats[2]), time).buildingResponse();
+                result = new SuccessfulResponse(String.format("%." + DECIMAL_PRECISION + "f", stats[2]), this).buildingResponse();
                 break;
 
             default:

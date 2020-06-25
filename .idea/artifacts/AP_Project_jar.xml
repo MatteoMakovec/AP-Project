@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AP-Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AP_Project_jar</output-path>
+    <root id="archive" name="AP-Project.jar">
+      <element id="module-output" name="AP-Project" />
+    </root>
+  </artifact>
+</component>

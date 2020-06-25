@@ -32,7 +32,7 @@ public class ExpressionsDomain {
                 break;
 
             default:
-                throw new CommandException("Protocol's values kind format not met");
+                throw new CommandException("Protocol's values kind format not met: " + valuesKind);
         }
         return expressionsDomain;
     }

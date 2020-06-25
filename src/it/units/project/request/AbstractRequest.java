@@ -8,7 +8,7 @@ import it.units.project.exception.MalformedInputRequest;
 public abstract class AbstractRequest {
     protected final String request;
     protected double[] stats;
-    public double time;
+    private double time;
 
     public abstract String process() throws CommandException, MalformedInputRequest, BadDomainDefinition, ComputationException;
 
@@ -25,6 +25,10 @@ public abstract class AbstractRequest {
 
     public double closeRequest(){
         time = (System.nanoTime() - time) / 1_000_000_000.0;
+        return time;
+    }
+
+    public double getTime(){
         return time;
     }
 

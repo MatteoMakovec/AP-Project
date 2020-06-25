@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 
 public class ProcessingServer extends Server{
     private double[] stats;
-    private double[] statsRetrieved;
     public static int DECIMAL_PRECISION = 6;
 
     public ProcessingServer(int port, String quitCommand) {
@@ -28,6 +27,7 @@ public class ProcessingServer extends Server{
         AbstractRequest request;
         String response;
 
+        double[] statsRetrieved;
         synchronized (stats) {
             statsRetrieved = stats;
         }
@@ -38,10 +38,7 @@ public class ProcessingServer extends Server{
         }
         else{
             request = new ComputationRequest(input);
-            Future<String> future = executorService.submit(() -> {
-                String responseBuilt = requestProcessing(request);
-                return responseBuilt;
-            });
+            Future<String> future = executorService.submit(() -> requestProcessing(request));
             try{
                 response = future.get();
             } catch (InterruptedException | ExecutionException e){
@@ -56,13 +53,12 @@ public class ProcessingServer extends Server{
 
         try {
             response = request.process();
-            statsRetrieved[0] += 1;
-            statsRetrieved[1] += request.time;
-            if (request.time > statsRetrieved[2]){
-                statsRetrieved[2] = request.time;
-            }
             synchronized (stats) {
-                stats = statsRetrieved;
+                stats[0] += 1;
+                stats[1] += request.getTime();
+                if (request.getTime() > stats[2]){
+                    stats[2] = request.getTime();
+                }
             }
         } catch (CommandException | MalformedInputRequest | BadDomainDefinition | ComputationException | IllegalArgumentException e){
             response = new ErrorResponse("("+e.getClass().getSimpleName()+") "+e.getMessage()).buildingResponse();

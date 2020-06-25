@@ -6,6 +6,7 @@ import it.units.project.exception.ComputationException;
 import it.units.project.expression.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 import static it.units.project.server.ProcessingServer.DECIMAL_PRECISION;
@@ -71,9 +72,9 @@ public class Computation {
                 break;
 
             default:
-                throw new CommandException("Protocol's computation kind format not met");
+                throw new CommandException("Protocol's computation kind format not met: " + computationKind);
         }
-        return String.format("%." + DECIMAL_PRECISION + "f", Double.parseDouble(result));
+        return String.format(Locale.US,"%." + DECIMAL_PRECISION + "f", Double.parseDouble(result));
     }
 
     private double valueComputation(String stringToProcess, List<Double> tuple) throws ComputationException, IllegalArgumentException {

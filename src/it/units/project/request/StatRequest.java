@@ -28,7 +28,7 @@ public class StatRequest extends AbstractRequest {
                 break;
 
             default:
-                throw new CommandException("Command not in protocol specification");
+                throw new CommandException("Command not in protocol specification: " + request);
         }
         return result;
     }
